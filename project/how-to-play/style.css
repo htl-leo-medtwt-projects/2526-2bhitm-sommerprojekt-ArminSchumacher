@@ -1,0 +1,92 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('../img/Map3.png');
+    background-attachment: fixed;
+    background-size: cover;
+    overflow: hidden;
+}
+
+@font-face {
+    font-family: Josefin;
+    src: url(../font/JosefinSlab-Regular.ttf);
+}
+
+@font-face {
+    font-family: Josefin-Bold;
+    src: url(../font/JosefinSlab-Bold.ttf);
+}
+
+.info {
+    position: fixed;
+    top: -11vh;
+    left: -5vw;
+    width: 110vw;
+    height: 120vh;
+    animation: slideUp 1s ease-out;
+}
+
+#info {
+    position: relative;
+    top: 5vh;
+    left: 20vw;
+    height: 65vh;
+    width: 60vw;
+    color: white;
+    font-size: 2.5em;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    animation: slideUp 1s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(300vh);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+h1 {
+    font-size: 0.8em;
+    font-family: Josefin-Bold;
+}
+
+p {
+    font-size: 0.6em;
+    font-family: Josefin-Bold;
+}
+
+.back {
+    position: fixed;
+    bottom: -8vh;
+    left: 35vw;
+    height: 35vh;
+    opacity: 0;
+    animation: slideIn 1s ease-out 0.4s forwards;
+    transform: rotate(-30deg);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100vw);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.back:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}

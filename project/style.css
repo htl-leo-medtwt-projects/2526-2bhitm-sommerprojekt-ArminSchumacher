@@ -1,0 +1,77 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('./img/StartMap.png');
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.nav-tree {
+    position: fixed;
+    top: -97vh;
+    left: -38vw;
+    height: 280vh;
+    transform: rotate(-3deg);
+}
+
+.start {
+    position: fixed;
+    top: 9vh;
+    left: 0vw;
+    height: 26vh;
+    transform: rotate(-3deg);
+}
+
+.how-to-play {
+    position: fixed;
+    top: 30vh;
+    left: 0vw;
+    height: 27vh;
+    transform: rotate(2deg);
+}
+
+.credits {
+    position: fixed;
+    top: 50vh;
+    left: 0vw;
+    height: 26vh;
+    transform: rotate(-5deg);
+}
+
+.start:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+.how-to-play:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+.credits:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+.logo {
+    position: fixed;
+    top: 3vh;
+    right: 0vw;
+    height: 80vh;
+    transform: rotate(12deg);
+    animation: logoAnimation 3.5s ease-in-out infinite;
+}
+
+
+@keyframes logoAnimation {
+    0% {
+        transform: rotate(12deg) scale(1);
+    }
+    50% {
+        transform: rotate(14deg) scale(1.06);
+    }
+    100% {
+        transform: rotate(12deg) scale(1);
+    }
+}
