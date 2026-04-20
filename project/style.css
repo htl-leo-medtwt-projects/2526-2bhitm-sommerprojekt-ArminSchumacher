@@ -7,62 +7,67 @@ body {
     background-size: cover;
 }
 
-.nav-tree {
+#nav-tree {
     position: fixed;
     top: -97vh;
-    left: -38vw;
+    left: -46vw;
     height: 280vh;
     transform: rotate(-3deg);
+    z-index: 1;
 }
 
-.start {
+#start {
     position: fixed;
     top: 9vh;
     left: 0vw;
     height: 26vh;
     transform: rotate(-3deg);
+    cursor: pointer;
+    z-index: 2;
 }
 
-.how-to-play {
+#how-to-play {
     position: fixed;
     top: 30vh;
     left: 0vw;
     height: 27vh;
     transform: rotate(2deg);
+    z-index: 2;
 }
 
-.credits {
+#credits {
     position: fixed;
     top: 50vh;
     left: 0vw;
     height: 26vh;
     transform: rotate(-5deg);
+    z-index: 2;
 }
 
-.start:hover {
+#start:hover {
     transform: scale(1.05);
     transition: transform 0.3s ease;
 }
 
-.how-to-play:hover {
+#how-to-play:hover {
     transform: scale(1.05);
     transition: transform 0.3s ease;
 }
 
-.credits:hover {
+#credits:hover {
     transform: scale(1.05);
     transition: transform 0.3s ease;
 }
 
-.logo {
+#logo {
     position: fixed;
     top: 3vh;
     right: 0vw;
     height: 80vh;
     transform: rotate(12deg);
     animation: logoAnimation 3.5s ease-in-out infinite;
+    z-index: 2;
 }
-
 
 @keyframes logoAnimation {
     0% {
@@ -74,4 +79,14 @@ body {
     100% {
         transform: rotate(12deg) scale(1);
     }
+}
+
+#playerChoose {
+    position: fixed;
+    top: -100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 110vh;
+    opacity: 0;
+    z-index: 0;
 }
