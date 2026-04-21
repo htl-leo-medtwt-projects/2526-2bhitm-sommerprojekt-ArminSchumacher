@@ -11,10 +11,12 @@
 
 <body>
 
+    <!-- Logo -->
     <div>
         <img src="./img/Logo 2.png" alt="Game Logo" id="logo">
     </div>
 
+    <!-- NAV -->
     <img src="./img/Tree 2.png" alt="Navigation Tree" id="nav-tree">
 
     <nav>
@@ -24,9 +26,20 @@
         <a href="credits/credits.html"><img src="./img/credits.png" alt="Credits Button" id="credits"></a>
     </nav>
 
+    <!-- Player Choose -->
     <img src="./img/player.png" alt="Player Characters" id="playerChoose">
 
-    
+    <div id="character-selection">
+        <img src="./img/goat.png" alt="Character 1" class="character" id="goat" onclick="selectCharacter(1)">
+        <img src="./img/white-sheep.png" alt="Character 2" class="character" id="white-sheep"
+            onclick="selectCharacter(2)">
+        <img src="./img/black-sheep.png" alt="Character 3" class="character" id="black-sheep"
+            onclick="selectCharacter(3)">
+    </div>
+
+    <div id="player">
+        <img id="spriteImg" src="./img/sprite.png" alt="sprite">
+    </div>
 
 </body>
 

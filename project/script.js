@@ -5,6 +5,7 @@ let logo = document.getElementById("logo");
 let howToPlayButton = document.getElementById("how-to-play");
 let creditsButton = document.getElementById("credits");
 let playerChoose = document.getElementById("playerChoose");
+let characterSelection = document.getElementById("character-selection");
 
 
 // Startbutton funvtion
@@ -31,4 +32,7 @@ function Start() {
     playerChoose.style.transition = "opacity 0.5s ease, top 0.9s ease";
     playerChoose.style.opacity = "1";
     playerChoose.style.top = "60%";
+    characterSelection.style.transition = "opacity 0.5s ease, top 0.9s ease";
+    characterSelection.style.opacity = "1";
+    characterSelection.style.top = "50%";
 }

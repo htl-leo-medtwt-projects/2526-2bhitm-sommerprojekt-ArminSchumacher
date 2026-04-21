@@ -7,6 +7,8 @@ body {
     background-size: cover;
 }
 
+
+/* Start Screen & NAV - ANFANG*/
 #nav-tree {
     position: fixed;
     top: -97vh;
@@ -81,6 +83,10 @@ body {
     }
 }
 
+/* Start Screen & NAV - ENDE*/
+
+/* Player Choose - ANFANG */
+
 #playerChoose {
     position: fixed;
     top: -100%;
@@ -90,3 +96,26 @@ body {
     opacity: 0;
     z-index: 0;
 }
+
+#character-selection {
+    position: fixed;
+    top: -100%;
+    left: 52%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: 5vw;
+    opacity: 0;
+    z-index: 100;
+}
+
+.character {
+    width: 14vw;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.character:hover {
+    transform: scale(1.05);
+}
+
+/* Player Choose - ENDE */
