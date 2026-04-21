@@ -75,9 +75,11 @@ body {
     0% {
         transform: rotate(12deg) scale(1);
     }
+
     50% {
         transform: rotate(14deg) scale(1.06);
     }
+
     100% {
         transform: rotate(12deg) scale(1);
     }
@@ -119,3 +121,24 @@ body {
 }
 
 /* Player Choose - ENDE */
+
+/* Spielfigur - ANFANG */
+#player {
+    position: fixed;
+    left: 50vw;
+    top: 50vh;
+    width: 50px;
+    height: 55px;
+    overflow: hidden;
+    display: none;
+    z-index: 200;
+}
+
+#spriteImg {
+    height: 600px;
+    position: relative;
+    right: 0px;
+    top: -548px;
+}
+
+/* Spielfigur - ENDE */
