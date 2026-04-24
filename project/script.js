@@ -6,7 +6,8 @@ let howToPlayButton = document.getElementById("how-to-play");
 let creditsButton = document.getElementById("credits");
 let playerChoose = document.getElementById("playerChoose");
 let characterSelection = document.getElementById("character-selection");
-let fog = document.getElementById("fog");
+let fogDown = document.getElementById("fogDown");
+let fogUp = document.getElementById("fogUp");
 
 let PLAYER = {
     box: document.getElementById("player"),
@@ -82,8 +83,6 @@ function keyListenerUp(e) {
 
 function selectCharacter(characterNumber) {
     PLAYER.spriteImg.src = "./img/sprite.png";
-    fog.style.transition = "opacity 1s ease";
-    fog.style.opacity = "0";
 
     if (characterNumber === 1) {
         // Ziege
@@ -111,6 +110,12 @@ function selectCharacter(characterNumber) {
     PLAYER.spriteImgNumber = 0;
     PLAYER.spriteImg.style.right = PLAYER.spriteStartRight + "px";
     PLAYER.spriteImg.style.top = "-330px";
+
+    fogDown.style.transition = "top 1.2s ease-in-out";
+    fogDown.style.top = "100%";
+
+    fogUp.style.transition = "top 1.2s ease-in-out";
+    fogUp.style.top = "-100%";
 
     gameStarted = true;
     gameLoop();
