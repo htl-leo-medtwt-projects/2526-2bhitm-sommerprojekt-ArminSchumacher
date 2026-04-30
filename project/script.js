@@ -8,6 +8,7 @@ let playerChoose = document.getElementById("playerChoose");
 let characterSelection = document.getElementById("character-selection");
 let fogDown = document.getElementById("fogDown");
 let fogUp = document.getElementById("fogUp");
+let thoughtBubble = document.getElementById("thought-bubble");
 
 let PLAYER = {
     box: document.getElementById("player"),
@@ -116,6 +117,9 @@ function selectCharacter(characterNumber) {
 
     fogUp.style.transition = "top 1.2s ease-in-out";
     fogUp.style.top = "-100%";
+
+    thoughtBubble.style.display = "flex";
+    thoughtBubble.style.animation = "fadeInThought 0.8s ease forwards";
 
     gameStarted = true;
     gameLoop();
