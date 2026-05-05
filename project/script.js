@@ -20,6 +20,7 @@ let characterSelection = document.getElementById("character-selection");
 let fogDown = document.getElementById("fogDown");
 let fogUp = document.getElementById("fogUp");
 let thoughtBubble = document.getElementById("thought-bubble");
+let healthBar = document.getElementById("health-bar");
 
 let PLAYER = {
     box: document.getElementById("player"),
@@ -154,6 +155,9 @@ function selectCharacter(characterNumber) {
     PLAYER.spriteImg.style.right = PLAYER.spriteStartRight + "px";
     PLAYER.spriteImg.style.top = "-330px";
 
+    healthBar.style.transition = "opacity 1.5s ease";
+    healthBar.style.opacity = "1";
+
     mapRow = 1;
     mapCol = 1;
     updateMapBackground();
@@ -181,18 +185,34 @@ function setSpriteDirection(direction) {
 function changeMap(direction) {
     if (direction === "left" && mapCol > 0) {
         mapCol--;
+        loadThoughtById(2);
+        thoughtBubble.offsetWidth;
+        thoughtBubble.style.display = "flex";
+        thoughtBubble.style.animation = "fadeInThought 0.75s ease 1s forwards";
     }
 
     if (direction === "right" && mapCol < MAPS[0].length - 1) {
         mapCol++;
+        loadThoughtById(3);
+        thoughtBubble.offsetWidth;
+        thoughtBubble.style.display = "flex";
+        thoughtBubble.style.animation = "fadeInThought 0.75s ease 1s forwards";
     }
 
     if (direction === "up" && mapRow > 0) {
         mapRow--;
+        loadThoughtById(4);
+        thoughtBubble.offsetWidth;
+        thoughtBubble.style.display = "flex";
+        thoughtBubble.style.animation = "fadeInThought 0.75s ease 1s forwards";
     }
 
     if (direction === "down" && mapRow < MAPS.length - 1) {
         mapRow++;
+        loadThoughtById(2);
+        thoughtBubble.offsetWidth;
+        thoughtBubble.style.display = "flex";
+        thoughtBubble.style.animation = "fadeInThought 0.75s ease 1s forwards";
     }
 
     updateMapBackground();

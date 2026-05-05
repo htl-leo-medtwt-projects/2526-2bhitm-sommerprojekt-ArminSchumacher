@@ -254,3 +254,19 @@ body {
 }
 
 /* Thought Bubble - ENDE */
+
+/* Health Bar */
+#health-bar {
+    position: fixed;
+    top: 2vh;
+    right: 2vw;
+    width: 20vw;
+    height: 7vh;
+    z-index: 300;
+    opacity: 0;
+}
+
+#health {
+    width: 100%;
+    height: 100%;
+}
