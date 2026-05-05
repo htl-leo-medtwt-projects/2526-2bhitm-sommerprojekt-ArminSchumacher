@@ -43,14 +43,18 @@ let GAME_CONFIG = {
 let gameStarted = false;
 
 // MAPS
-let currentMap = 0;
+let mapRow = 1;
+let mapCol = 1;
 
 const MAPS = [
-    "./img/StartMap.png",
-    "./img/map2.png",
-    "./img/map3.png",
-    "./img/map4.png"
+    ["./img/LagerUndElixier.png", "./img/CaveUndWeg.png", "./img/UmgefallenerBaum.png"],
+    ["./img/CaveUndWeg.png", "./img/StartMap.png", "./img/LagerUndElixier.png"],
+    ["./img/UmgefallenerBaum.png", "./img/LagerUndElixier.png", "./img/CaveUndWeg.png"]
 ];
+
+function updateMapBackground() {
+    document.body.style.backgroundImage = `url('${MAPS[mapRow][mapCol]}')`;
+}
 
 // KEYBOARD INPUT
 document.onkeydown = keyListenerDown;
@@ -150,8 +154,9 @@ function selectCharacter(characterNumber) {
     PLAYER.spriteImg.style.right = PLAYER.spriteStartRight + "px";
     PLAYER.spriteImg.style.top = "-330px";
 
-    currentMap = 0;
-    document.body.style.backgroundImage = `url('${MAPS[currentMap]}')`;
+    mapRow = 1;
+    mapCol = 1;
+    updateMapBackground();
 }
 
 function setSpriteDirection(direction) {
@@ -174,31 +179,23 @@ function setSpriteDirection(direction) {
 
 // CHANGE MAP
 function changeMap(direction) {
-    if (direction === "left") {
-        currentMap--;
+    if (direction === "left" && mapCol > 0) {
+        mapCol--;
     }
 
-    if (direction === "right") {
-        currentMap++;
+    if (direction === "right" && mapCol < MAPS[0].length - 1) {
+        mapCol++;
     }
 
-    if (direction === "up") {
-        currentMap++;
+    if (direction === "up" && mapRow > 0) {
+        mapRow--;
     }
 
-    if (direction === "down") {
-        currentMap--;
+    if (direction === "down" && mapRow < MAPS.length - 1) {
+        mapRow++;
     }
 
-    if (currentMap < 0) {
-        currentMap = MAPS.length - 1;
-    }
-
-    if (currentMap >= MAPS.length) {
-        currentMap = 0;
-    }
-
-    document.body.style.backgroundImage = `url('${MAPS[currentMap]}')`;
+    updateMapBackground();
 }
 
 function movePlayer(dx, dy, dr) {
