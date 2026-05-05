@@ -1,3 +1,14 @@
+// LIBRARY
+function loadThoughtById(thoughtId) {
+    const thoughtObject = thoughtBubbles.find(item => item.id === thoughtId);
+
+    if (thoughtObject) {
+        thoughts.textContent = thoughtObject.text;
+    } else {
+        thoughts.textContent = "Kein passender Gedanke gefunden.";
+    }
+}
+
 // VARIABLEN
 let startButton = document.getElementById("start");
 let navTree = document.getElementById("nav-tree");
@@ -31,6 +42,17 @@ let GAME_CONFIG = {
 
 let gameStarted = false;
 
+// MAPS
+let currentMap = 0;
+
+const MAPS = [
+    "./img/StartMap.png",
+    "./img/map2.png",
+    "./img/map3.png",
+    "./img/map4.png"
+];
+
+// KEYBOARD INPUT
 document.onkeydown = keyListenerDown;
 document.onkeyup = keyListenerUp;
 
@@ -119,10 +141,17 @@ function selectCharacter(characterNumber) {
     fogUp.style.top = "-100%";
 
     thoughtBubble.style.display = "flex";
-    thoughtBubble.style.animation = "fadeInThought 0.8s ease forwards";
+    thoughtBubble.style.animation = "fadeInThought 0.75s ease 1s forwards";
 
     gameStarted = true;
     gameLoop();
+
+    PLAYER.spriteImgNumber = 0;
+    PLAYER.spriteImg.style.right = PLAYER.spriteStartRight + "px";
+    PLAYER.spriteImg.style.top = "-330px";
+
+    currentMap = 0;
+    document.body.style.backgroundImage = `url('${MAPS[currentMap]}')`;
 }
 
 function setSpriteDirection(direction) {
@@ -143,6 +172,35 @@ function setSpriteDirection(direction) {
     }
 }
 
+// CHANGE MAP
+function changeMap(direction) {
+    if (direction === "left") {
+        currentMap--;
+    }
+
+    if (direction === "right") {
+        currentMap++;
+    }
+
+    if (direction === "up") {
+        currentMap++;
+    }
+
+    if (direction === "down") {
+        currentMap--;
+    }
+
+    if (currentMap < 0) {
+        currentMap = MAPS.length - 1;
+    }
+
+    if (currentMap >= MAPS.length) {
+        currentMap = 0;
+    }
+
+    document.body.style.backgroundImage = `url('${MAPS[currentMap]}')`;
+}
+
 function movePlayer(dx, dy, dr) {
     let originalX = parseFloat(PLAYER.box.style.left);
     let originalY = parseFloat(PLAYER.box.style.top);
@@ -158,20 +216,28 @@ function movePlayer(dx, dy, dr) {
     let newX = originalX + dx;
     let newY = originalY + dy;
 
+    // links raus
     if (newX < 0) {
-        newX = 0;
+        changeMap("left");
+        newX = window.innerWidth - PLAYER.box.offsetWidth - 10;
     }
 
-    if (newY < 0) {
-        newY = 0;
-    }
-
+    // rechts raus
     if (newX > window.innerWidth - PLAYER.box.offsetWidth) {
-        newX = window.innerWidth - PLAYER.box.offsetWidth;
+        changeMap("right");
+        newX = 10;
     }
 
+    // oben raus
+    if (newY < 0) {
+        changeMap("up");
+        newY = window.innerHeight - PLAYER.box.offsetHeight - 10;
+    }
+
+    // unten raus
     if (newY > window.innerHeight - PLAYER.box.offsetHeight) {
-        newY = window.innerHeight - PLAYER.box.offsetHeight;
+        changeMap("down");
+        newY = 10;
     }
 
     PLAYER.box.style.left = newX + "px";
@@ -259,4 +325,6 @@ function Start() {
     characterSelection.style.transition = "opacity 0.5s ease, top 0.9s ease";
     characterSelection.style.opacity = "1";
     characterSelection.style.top = "50%";
+
+    loadThoughtById(1);
 }
