@@ -38,7 +38,8 @@ let KEY_EVENTS = {
 
 let GAME_CONFIG = {
     gameSpeed: 28,
-    characterSpeed: 5
+    characterSpeed: 15
+    // normal: 5
 };
 
 let gameStarted = false;
@@ -48,9 +49,9 @@ let mapRow = 1;
 let mapCol = 1;
 
 const MAPS = [
-    ["./img/LagerUndElixier.png", "./img/CaveUndWeg.png", "./img/UmgefallenerBaum.png"],
-    ["./img/CaveUndWeg.png", "./img/StartMap.png", "./img/LagerUndElixier.png"],
-    ["./img/UmgefallenerBaum.png", "./img/LagerUndElixier.png", "./img/CaveUndWeg.png"]
+    ["./img/LagerUndElixier.png", "./img/CaveUndWeg.png", "./img/CaveUndWeg.png"],
+    ["./img/UmgefallenerBaum.png", "./img/StartMap.png", "./img/LagerUndElixier.png"],
+    ["./img/CaveUndWeg.png", "./img/LagerUndElixier.png", "./img/CaveUndWeg.png"]
 ];
 
 function updateMapBackground() {
@@ -185,34 +186,50 @@ function setSpriteDirection(direction) {
 function changeMap(direction) {
     if (direction === "left" && mapCol > 0) {
         mapCol--;
-        loadThoughtById(2);
+        loadThoughtById(3);
+        thoughtBubble.style.animation = "none";
         thoughtBubble.offsetWidth;
         thoughtBubble.style.display = "flex";
-        thoughtBubble.style.animation = "fadeInThought 0.75s ease 1s forwards";
+        thoughtBubble.style.animation = "fadeInThought 0.75s ease 0.3s forwards";
     }
 
     if (direction === "right" && mapCol < MAPS[0].length - 1) {
         mapCol++;
-        loadThoughtById(3);
+        if (mapRow === 1 && mapCol === 1) {
+            loadThoughtById(1);
+        } else {
+            loadThoughtById(5);
+        }
+        thoughtBubble.style.animation = "none";
         thoughtBubble.offsetWidth;
         thoughtBubble.style.display = "flex";
-        thoughtBubble.style.animation = "fadeInThought 0.75s ease 1s forwards";
+        thoughtBubble.style.animation = "fadeInThought 0.75s ease 0.3s forwards";
     }
 
     if (direction === "up" && mapRow > 0) {
         mapRow--;
-        loadThoughtById(4);
+        if (mapRow === 1 && mapCol === 1) {
+            loadThoughtById(1);
+        } else {
+            loadThoughtById(4);
+        }
+        thoughtBubble.style.animation = "none";
         thoughtBubble.offsetWidth;
         thoughtBubble.style.display = "flex";
-        thoughtBubble.style.animation = "fadeInThought 0.75s ease 1s forwards";
+        thoughtBubble.style.animation = "fadeInThought 0.75s ease 0.3s forwards";
     }
 
     if (direction === "down" && mapRow < MAPS.length - 1) {
         mapRow++;
-        loadThoughtById(2);
+        if (mapRow === 1 && mapCol === 1) {
+            loadThoughtById(1);
+        } else {
+            loadThoughtById(2);
+        }
+        thoughtBubble.style.animation = "none";
         thoughtBubble.offsetWidth;
         thoughtBubble.style.display = "flex";
-        thoughtBubble.style.animation = "fadeInThought 0.75s ease 1s forwards";
+        thoughtBubble.style.animation = "fadeInThought 0.75s ease 0.3s forwards";
     }
 
     updateMapBackground();
@@ -344,4 +361,20 @@ function Start() {
     characterSelection.style.top = "50%";
 
     loadThoughtById(1);
+}
+
+// WOLF
+let wolf = document.getElementById("wolf");
+
+function updateWolfVisibility() {
+    if (mapRow === 1 && mapCol === 0) {
+        wolf.style.display = "block";
+    } else {
+        wolf.style.display = "none";
+    }
+}
+
+function updateMapBackground() {
+    document.body.style.backgroundImage = `url('${MAPS[mapRow][mapCol]}')`;
+    updateWolfVisibility();
 }

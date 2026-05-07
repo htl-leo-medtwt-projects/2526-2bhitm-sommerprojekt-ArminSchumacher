@@ -5,7 +5,7 @@ const thoughtBubbles = [
   },
   {
     "id": 2,
-    "text": "Hey can you help me find my way out of here? I need to get to the farm"
+    "text": "A camp! Maybe I can find clues here on how to get out."
   },
   {
     "id": 3,
@@ -14,5 +14,9 @@ const thoughtBubbles = [
   {
     "id": 4,
     "text": "Which way should I go?"
+  }, 
+  {
+    "id": 5,
+    "text": "Hey owl! Can you help me? I need to get out of here!"
   }
 ];
