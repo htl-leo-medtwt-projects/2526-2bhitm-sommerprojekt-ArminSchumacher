@@ -54,6 +54,140 @@ const MAPS = [
     ["./img/CaveUndWeg.png", "./img/LagerUndElixier.png", "./img/CaveUndWeg.png"]
 ];
 
+//neu
+function rectsOverlap(r1, r2) {
+    return !(
+        r1.right <= r2.left ||
+        r1.left >= r2.right ||
+        r1.bottom <= r2.top ||
+        r1.top >= r2.bottom
+    );
+}
+
+function getCurrentMapKey() {
+    return `${mapRow}-${mapCol}`;
+}
+
+function getWallsForCurrentMap() {
+    const mapKey = getCurrentMapKey();
+    return MAP_WALLS[mapKey] || [];
+}
+
+function wouldCollideWithAnyWall(nextLeft, nextTop) {
+    const playerRect = {
+        left: nextLeft,
+        top: nextTop,
+        right: nextLeft + PLAYER.box.clientWidth,
+        bottom: nextTop + PLAYER.box.clientHeight
+    };
+
+    const walls = getWallsForCurrentMap();
+
+    for (const wall of walls) {
+        const wallRect = {
+            left: wall.left,
+            top: wall.top,
+            right: wall.left + wall.width,
+            bottom: wall.top + wall.height
+        };
+
+        if (rectsOverlap(playerRect, wallRect)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+const MAP_WALLS = {
+    "1-1": [
+        // StartMap
+        // Beispiel: links oben großer Buschbereich
+        { left: 0, top: 0, width: 480, height: 350 },
+
+        // rechts oben großer Buschbereich
+        { left: 1150, top: 0, width: 450, height: 260 },
+
+        // unten links Büsche
+        { left: 0, top: 760, width: 430, height: 340 },
+
+        // unten rechts Büsche
+        { left: 1080, top: 760, width: 520, height: 340 }
+    ],
+
+    "1-0": [
+        // linke Wolf-Map mit Weg in der Mitte
+        // obere Waldkante
+        { left: 0, top: 0, width: 1600, height: 300 },
+
+        // untere Waldkante
+        { left: 0, top: 620, width: 1600, height: 460 },
+
+        // mittlerer Baum / Hindernis
+        { left: 700, top: 180, width: 180, height: 500 }
+    ],
+
+    "1-2": [
+        // rechte Map Beispiel
+        { left: 0, top: 0, width: 1600, height: 240 },
+        { left: 0, top: 760, width: 1600, height: 320 }
+    ],
+
+    "0-1": [
+        // obere Map Beispiel
+        { left: 0, top: 0, width: 1600, height: 180 }
+    ],
+
+    "2-1": [
+        // untere Map Beispiel
+        { left: 0, top: 900, width: 1600, height: 180 }
+    ]
+};
+
+function movePlayer(dx, dy, dr) {
+    let currentX = parseFloat(PLAYER.box.style.left);
+    let currentY = parseFloat(PLAYER.box.style.top);
+
+    if (isNaN(currentX)) currentX = 650;
+    if (isNaN(currentY)) currentY = 400;
+
+    // zuerst X testen
+    let nextX = currentX + dx;
+
+    // Map-Wechsel links/rechts
+    if (nextX < 0) {
+        changeMap("left");
+        nextX = window.innerWidth - PLAYER.box.offsetWidth - 10;
+    } else if (nextX > window.innerWidth - PLAYER.box.offsetWidth) {
+        changeMap("right");
+        nextX = 10;
+    } else if (dx !== 0 && wouldCollideWithAnyWall(nextX, currentY)) {
+        nextX = currentX;
+    }
+
+    // dann Y testen
+    let nextY = currentY + dy;
+
+    // Map-Wechsel oben/unten
+    if (nextY < 0) {
+        changeMap("up");
+        nextY = window.innerHeight - PLAYER.box.offsetHeight - 10;
+    } else if (nextY > window.innerHeight - PLAYER.box.offsetHeight) {
+        changeMap("down");
+        nextY = 10;
+    } else if (dy !== 0 && wouldCollideWithAnyWall(nextX, nextY)) {
+        nextY = currentY;
+    }
+
+    PLAYER.box.style.left = nextX + "px";
+    PLAYER.box.style.top = nextY + "px";
+
+    if (dr !== 0) {
+        PLAYER.spriteDirection = dr;
+    }
+}
+//neu
+
 function updateMapBackground() {
     document.body.style.backgroundImage = `url('${MAPS[mapRow][mapCol]}')`;
 }
@@ -235,52 +369,52 @@ function changeMap(direction) {
     updateMapBackground();
 }
 
-function movePlayer(dx, dy, dr) {
-    let originalX = parseFloat(PLAYER.box.style.left);
-    let originalY = parseFloat(PLAYER.box.style.top);
+// function movePlayer(dx, dy, dr) {
+//     let originalX = parseFloat(PLAYER.box.style.left);
+//     let originalY = parseFloat(PLAYER.box.style.top);
 
-    if (isNaN(originalX)) {
-        originalX = 800;
-    }
+//     if (isNaN(originalX)) {
+//         originalX = 800;
+//     }
 
-    if (isNaN(originalY)) {
-        originalY = 300;
-    }
+//     if (isNaN(originalY)) {
+//         originalY = 300;
+//     }
 
-    let newX = originalX + dx;
-    let newY = originalY + dy;
+//     let newX = originalX + dx;
+//     let newY = originalY + dy;
 
-    // links raus
-    if (newX < 0) {
-        changeMap("left");
-        newX = window.innerWidth - PLAYER.box.offsetWidth - 10;
-    }
+//     // links raus
+//     if (newX < 0) {
+//         changeMap("left");
+//         newX = window.innerWidth - PLAYER.box.offsetWidth - 10;
+//     }
 
-    // rechts raus
-    if (newX > window.innerWidth - PLAYER.box.offsetWidth) {
-        changeMap("right");
-        newX = 10;
-    }
+//     // rechts raus
+//     if (newX > window.innerWidth - PLAYER.box.offsetWidth) {
+//         changeMap("right");
+//         newX = 10;
+//     }
 
-    // oben raus
-    if (newY < 0) {
-        changeMap("up");
-        newY = window.innerHeight - PLAYER.box.offsetHeight - 10;
-    }
+//     // oben raus
+//     if (newY < 0) {
+//         changeMap("up");
+//         newY = window.innerHeight - PLAYER.box.offsetHeight - 10;
+//     }
 
-    // unten raus
-    if (newY > window.innerHeight - PLAYER.box.offsetHeight) {
-        changeMap("down");
-        newY = 10;
-    }
+//     // unten raus
+//     if (newY > window.innerHeight - PLAYER.box.offsetHeight) {
+//         changeMap("down");
+//         newY = 10;
+//     }
 
-    PLAYER.box.style.left = newX + "px";
-    PLAYER.box.style.top = newY + "px";
+//     PLAYER.box.style.left = newX + "px";
+//     PLAYER.box.style.top = newY + "px";
 
-    if (dr !== 0) {
-        PLAYER.spriteDirection = dr;
-    }
-}
+//     if (dr !== 0) {
+//         PLAYER.spriteDirection = dr;
+//     }
+// }
 
 function animatePlayer() {
     if (PLAYER.spriteImgNumber < 2) {
