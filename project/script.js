@@ -109,7 +109,7 @@ const MAP_WALLS = {
         { left: 1150, top: 0, width: 450, height: 260 },
 
         // unten links Büsche
-        { left: 0, top: 760, width: 430, height: 340 },
+        { left: 0, top: 760, width: 420, height: 640 },
 
         // unten rechts Büsche
         { left: 1080, top: 760, width: 520, height: 340 }
@@ -186,11 +186,34 @@ function movePlayer(dx, dy, dr) {
         PLAYER.spriteDirection = dr;
     }
 }
-//neu
+
+function drawVisibleWalls() {
+    document.querySelectorAll(".wall-visible").forEach(wall => wall.remove());
+
+    const walls = getWallsForCurrentMap();
+
+    for (const wall of walls) {
+        const visibleWall = document.createElement("div");
+        visibleWall.className = "wall-visible";
+        visibleWall.style.left = wall.left + "px";
+        visibleWall.style.top = wall.top + "px";
+        visibleWall.style.width = wall.width + "px";
+        visibleWall.style.height = wall.height + "px";
+        document.body.appendChild(visibleWall);
+    }
+}
 
 function updateMapBackground() {
     document.body.style.backgroundImage = `url('${MAPS[mapRow][mapCol]}')`;
+    updateWolfVisibility();
+    drawVisibleWalls();
 }
+//neu
+
+// function updateMapBackground() {
+//     document.body.style.backgroundImage = `url('${MAPS[mapRow][mapCol]}')`;
+//     updateWolfVisibility();
+// }
 
 // KEYBOARD INPUT
 document.onkeydown = keyListenerDown;
@@ -506,9 +529,4 @@ function updateWolfVisibility() {
     } else {
         wolf.style.display = "none";
     }
-}
-
-function updateMapBackground() {
-    document.body.style.backgroundImage = `url('${MAPS[mapRow][mapCol]}')`;
-    updateWolfVisibility();
 }
