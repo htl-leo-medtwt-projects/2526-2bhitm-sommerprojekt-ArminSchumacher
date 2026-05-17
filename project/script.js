@@ -103,28 +103,32 @@ const MAP_WALLS = {
     "1-1": [
         // StartMap
         // Beispiel: links oben großer Buschbereich
-        { left: 0, top: 0, width: 480, height: 350 },
+        { left: 0, top: 0, width: 300, height: 320 },
+        { left: 300, top: 0, width: 330, height: 200 },
 
         // rechts oben großer Buschbereich
-        { left: 1150, top: 0, width: 450, height: 260 },
+        { left: 1010, top: 0, width: 450, height: 290 },
+        { left: 750, top: 0, width: 450, height: 190 },
 
         // unten links Büsche
-        { left: 0, top: 760, width: 420, height: 640 },
+        { left: 0, top: 460, width: 280, height: 540 },
+        { left: 280, top: 660, width: 280, height: 240 },
 
         // unten rechts Büsche
-        { left: 1080, top: 760, width: 520, height: 340 }
+        { left: 1080, top: 450, width: 420, height: 640 },
+        { left: 800, top: 650, width: 320, height: 340 }
     ],
 
     "1-0": [
         // linke Wolf-Map mit Weg in der Mitte
         // obere Waldkante
-        { left: 0, top: 0, width: 1600, height: 300 },
+        { left: 0, top: 0, width: 1600, height: 340 },
 
         // untere Waldkante
-        { left: 0, top: 620, width: 1600, height: 460 },
+        { left: 0, top: 470, width: 1600, height: 460 },
 
         // mittlerer Baum / Hindernis
-        { left: 700, top: 180, width: 180, height: 500 }
+        { left: 550, top: 180, width: 180, height: 500 }
     ],
 
     "1-2": [
@@ -209,11 +213,6 @@ function updateMapBackground() {
     drawVisibleWalls();
 }
 //neu
-
-// function updateMapBackground() {
-//     document.body.style.backgroundImage = `url('${MAPS[mapRow][mapCol]}')`;
-//     updateWolfVisibility();
-// }
 
 // KEYBOARD INPUT
 document.onkeydown = keyListenerDown;
