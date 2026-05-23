@@ -38,7 +38,7 @@ let KEY_EVENTS = {
 
 let GAME_CONFIG = {
     gameSpeed: 28,
-    characterSpeed: 15
+    characterSpeed: 25
     // normal: 5
 };
 
@@ -50,7 +50,7 @@ let mapCol = 1;
 
 const MAPS = [
     ["./img/LagerUndElixier.png", "./img/CaveUndWeg.png", "./img/CaveUndWeg.png"],
-    ["./img/UmgefallenerBaum.png", "./img/StartMap.png", "./img/LagerUndElixier.png"],
+    ["./img/UmgefallenerBaum.png", "./img/StartMap.png", "./img/Eule-Map.png"],
     ["./img/CaveUndWeg.png", "./img/LagerUndElixier.png", "./img/CaveUndWeg.png"]
 ];
 
@@ -115,8 +115,8 @@ const MAP_WALLS = {
         { left: 280, top: 660, width: 280, height: 240 },
 
         // unten rechts Büsche
-        { left: 1080, top: 450, width: 420, height: 640 },
-        { left: 800, top: 650, width: 320, height: 340 }
+        { left: 1180, top: 440, width: 420, height: 550 },
+        { left: 800, top: 650, width: 420, height: 340 }
     ],
 
     "1-0": [
@@ -133,8 +133,8 @@ const MAP_WALLS = {
 
     "1-2": [
         // rechte Map Beispiel
-        { left: 0, top: 0, width: 1600, height: 240 },
-        { left: 0, top: 760, width: 1600, height: 320 }
+        { left: 0, top: 0, width: 700, height: 290 },
+        { left: 0, top: 430, width: 700, height: 620 }
     ],
 
     "0-1": [
