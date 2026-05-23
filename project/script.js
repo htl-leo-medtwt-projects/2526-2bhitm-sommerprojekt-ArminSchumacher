@@ -104,7 +104,7 @@ const MAP_WALLS = {
         // StartMap
         // Beispiel: links oben großer Buschbereich
         { left: 0, top: 0, width: 300, height: 320 },
-        { left: 300, top: 0, width: 330, height: 200 },
+        { left: 300, top: 0, width: 315, height: 200 },
 
         // rechts oben großer Buschbereich
         { left: 1010, top: 0, width: 450, height: 290 },
@@ -122,24 +122,27 @@ const MAP_WALLS = {
     "1-0": [
         // linke Wolf-Map mit Weg in der Mitte
         // obere Waldkante
-        { left: 0, top: 0, width: 1600, height: 340 },
+        { left: 0, top: 0, width: 1600, height: 320 },
 
         // untere Waldkante
         { left: 0, top: 470, width: 1600, height: 460 },
 
-        // mittlerer Baum / Hindernis
+        // mittlerer Baum
         { left: 550, top: 180, width: 180, height: 500 }
     ],
 
     "1-2": [
-        // rechte Map Beispiel
         { left: 0, top: 0, width: 700, height: 290 },
-        { left: 0, top: 430, width: 700, height: 620 }
+        { left: 0, top: 440, width: 700, height: 620 },
+        { left: 840, top: 0, width: 700, height: 1290 }
     ],
 
     "0-1": [
-        // obere Map Beispiel
-        { left: 0, top: 0, width: 1600, height: 180 }
+        { left: 0, top: 0, width: 1050, height: 350 },
+        { left: 0, top: 500, width: 610, height: 400 },
+        { left: 750, top: 500, width: 700, height: 400 },
+        { left: 900, top: 0, width: 610, height: 200 },
+        { left: 1170, top: 0, width: 400, height: 350 }
     ],
 
     "2-1": [
@@ -390,53 +393,6 @@ function changeMap(direction) {
 
     updateMapBackground();
 }
-
-// function movePlayer(dx, dy, dr) {
-//     let originalX = parseFloat(PLAYER.box.style.left);
-//     let originalY = parseFloat(PLAYER.box.style.top);
-
-//     if (isNaN(originalX)) {
-//         originalX = 800;
-//     }
-
-//     if (isNaN(originalY)) {
-//         originalY = 300;
-//     }
-
-//     let newX = originalX + dx;
-//     let newY = originalY + dy;
-
-//     // links raus
-//     if (newX < 0) {
-//         changeMap("left");
-//         newX = window.innerWidth - PLAYER.box.offsetWidth - 10;
-//     }
-
-//     // rechts raus
-//     if (newX > window.innerWidth - PLAYER.box.offsetWidth) {
-//         changeMap("right");
-//         newX = 10;
-//     }
-
-//     // oben raus
-//     if (newY < 0) {
-//         changeMap("up");
-//         newY = window.innerHeight - PLAYER.box.offsetHeight - 10;
-//     }
-
-//     // unten raus
-//     if (newY > window.innerHeight - PLAYER.box.offsetHeight) {
-//         changeMap("down");
-//         newY = 10;
-//     }
-
-//     PLAYER.box.style.left = newX + "px";
-//     PLAYER.box.style.top = newY + "px";
-
-//     if (dr !== 0) {
-//         PLAYER.spriteDirection = dr;
-//     }
-// }
 
 function animatePlayer() {
     if (PLAYER.spriteImgNumber < 2) {
