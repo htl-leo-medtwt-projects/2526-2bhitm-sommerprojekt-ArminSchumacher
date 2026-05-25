@@ -49,9 +49,9 @@ let mapRow = 1;
 let mapCol = 1;
 
 const MAPS = [
-    ["./img/LagerUndElixier.png", "./img/CaveUndWeg.png", "./img/CaveUndWeg.png"],
+    ["./img/field-map.png", "./img/CaveUndWeg.png", "./img/CaveUndWeg.png"],
     ["./img/UmgefallenerBaum.png", "./img/StartMap.png", "./img/Eule-Map.png"],
-    ["./img/CaveUndWeg.png", "./img/LagerUndElixier.png", "./img/CaveUndWeg.png"]
+    ["./img/CaveUndWeg.png", "./img/bear-map.png", "./img/CaveUndWeg.png"]
 ];
 
 //neu
@@ -147,7 +147,9 @@ const MAP_WALLS = {
 
     "2-1": [
         // untere Map Beispiel
-        { left: 0, top: 900, width: 1600, height: 180 }
+        { left: 0, top: 0, width: 575, height: 1550 },
+        { left: 800, top: 0, width: 575, height: 1550 },
+        { left: 0, top: 425, width: 1575, height: 50 }
     ]
 };
 

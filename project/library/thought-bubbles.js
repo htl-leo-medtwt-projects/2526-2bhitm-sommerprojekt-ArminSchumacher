@@ -29,7 +29,7 @@ const thoughtBubbles = [
   },
   {
     "id": 7,
-    "text": "Yes I want to go home.I just woke up and suddenly I was here. Can you take me back to the farm?"
+    "text": "Yes I want to go home.I just woke up and suddenly I was here. Do you know where my farm is?"
   },
   {
     "id": 8,
@@ -37,7 +37,7 @@ const thoughtBubbles = [
   },,
   {
     "id": 9,
-    "text": "But trust is the only chance life offers right?"
+    "text": "But trust is the only chance life offers us, right?"
   },
   {
     "id": 10,
@@ -45,6 +45,6 @@ const thoughtBubbles = [
   },
   {
     "id": 11,
-    "text": "Trusting a stranger can lead to death in the forest, but it's the only chance life offers."
+    "text": "If you choose the way on my right, the forest will get darker and darker. But as the saying goes, after every tunnel comes light."
   }
 ];
