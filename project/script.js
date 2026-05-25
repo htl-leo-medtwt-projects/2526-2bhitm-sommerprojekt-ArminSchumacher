@@ -49,9 +49,9 @@ let mapRow = 1;
 let mapCol = 1;
 
 const MAPS = [
-    ["./img/field-map.png", "./img/CaveUndWeg.png", "./img/CaveUndWeg.png"],
+    ["./img/field-map.png", "./img/CaveUndWeg.png", "./img/canyon.png"],
     ["./img/UmgefallenerBaum.png", "./img/StartMap.png", "./img/Eule-Map.png"],
-    ["./img/CaveUndWeg.png", "./img/bear-map.png", "./img/CaveUndWeg.png"]
+    ["./img/CaveUndWeg.png", "./img/bear-map.png", "./img/farm.png"]
 ];
 
 //neu
@@ -100,56 +100,65 @@ function wouldCollideWithAnyWall(nextLeft, nextTop) {
 }
 
 const MAP_WALLS = {
+    // StartMap
     "1-1": [
-        // StartMap
-        // Beispiel: links oben großer Buschbereich
         { left: 0, top: 0, width: 300, height: 320 },
         { left: 300, top: 0, width: 315, height: 200 },
-
-        // rechts oben großer Buschbereich
         { left: 1010, top: 0, width: 450, height: 290 },
         { left: 750, top: 0, width: 450, height: 190 },
-
-        // unten links Büsche
         { left: 0, top: 460, width: 280, height: 540 },
         { left: 280, top: 660, width: 280, height: 240 },
-
-        // unten rechts Büsche
         { left: 1180, top: 440, width: 420, height: 550 },
         { left: 800, top: 650, width: 420, height: 340 }
     ],
 
+    // Wolf
     "1-0": [
-        // linke Wolf-Map mit Weg in der Mitte
-        // obere Waldkante
         { left: 0, top: 0, width: 1600, height: 320 },
-
-        // untere Waldkante
         { left: 0, top: 470, width: 1600, height: 460 },
-
-        // mittlerer Baum
         { left: 550, top: 180, width: 180, height: 500 }
     ],
 
+    // Eule
     "1-2": [
         { left: 0, top: 0, width: 700, height: 290 },
         { left: 0, top: 440, width: 700, height: 620 },
-        { left: 840, top: 0, width: 700, height: 1290 }
+        { left: 830, top: 0, width: 700, height: 1290 }
     ],
 
+    // verschiedene Wege
     "0-1": [
         { left: 0, top: 0, width: 1050, height: 350 },
-        { left: 0, top: 500, width: 610, height: 400 },
-        { left: 750, top: 500, width: 700, height: 400 },
+        { left: 0, top: 487, width: 610, height: 400 },
+        { left: 750, top: 487, width: 700, height: 400 },
         { left: 900, top: 0, width: 610, height: 200 },
         { left: 1170, top: 0, width: 400, height: 350 }
     ],
 
+    "0-2": [
+        { left: 0, top: 0, width: 1050, height: 350 },
+        { left: 230, top: 0, width: 1050, height: 400 },
+        { left: 0, top: 487, width: 690, height: 400 },
+        { left: 830, top: 0, width: 700, height: 1290 }
+    ],
+
+    // Bittersweet Ending
+    "0-0": [
+        { left: 500, top: 0, width: 1050, height: 350 },
+        { left: 500, top: 500, width: 1050, height: 450 }
+    ],
+
+    // Bär
     "2-1": [
-        // untere Map Beispiel
         { left: 0, top: 0, width: 575, height: 1550 },
         { left: 800, top: 0, width: 575, height: 1550 },
         { left: 0, top: 425, width: 1575, height: 50 }
+    ],
+
+    // Farm
+    "2-2": [
+        { left: 830, top: 0, width: 700, height: 1290 },
+        { left: 0, top: 0, width: 700, height: 1290 }
     ]
 };
 
