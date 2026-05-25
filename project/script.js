@@ -21,6 +21,10 @@ let fogDown = document.getElementById("fogDown");
 let fogUp = document.getElementById("fogUp");
 let thoughtBubble = document.getElementById("thought-bubble");
 let healthBar = document.getElementById("health-bar");
+let gameOverBox = document.getElementById("game-over-box");
+let gameOverScreen = document.getElementById("game-over-screen");
+let endingText = document.getElementById("ending-text");
+let endingTitle = document.getElementById("ending-title");
 
 let PLAYER = {
     box: document.getElementById("player"),
@@ -38,8 +42,8 @@ let KEY_EVENTS = {
 
 let GAME_CONFIG = {
     gameSpeed: 28,
-    characterSpeed: 25
-    // normal: 5
+    characterSpeed: 30
+    // normal: 8
 };
 
 let gameStarted = false;
@@ -170,10 +174,13 @@ function movePlayer(dx, dy, dr) {
     if (isNaN(currentX)) currentX = 650;
     if (isNaN(currentY)) currentY = 400;
 
-    // zuerst X testen
     let nextX = currentX + dx;
 
-    // Map-Wechsel links/rechts
+    if (mapRow === 0 && mapCol === 0 && nextX < 120) {
+        showGameOverBittersweet();
+        return;
+    }
+
     if (nextX < 0) {
         changeMap("left");
         nextX = window.innerWidth - PLAYER.box.offsetWidth - 10;
@@ -184,10 +191,8 @@ function movePlayer(dx, dy, dr) {
         nextX = currentX;
     }
 
-    // dann Y testen
     let nextY = currentY + dy;
 
-    // Map-Wechsel oben/unten
     if (nextY < 0) {
         changeMap("up");
         nextY = window.innerHeight - PLAYER.box.offsetHeight - 10;
@@ -200,6 +205,11 @@ function movePlayer(dx, dy, dr) {
 
     PLAYER.box.style.left = nextX + "px";
     PLAYER.box.style.top = nextY + "px";
+
+    if (isTouchingCup()) {
+        showGameOverGoodEnding();
+        return;
+    }
 
     if (dr !== 0) {
         PLAYER.spriteDirection = dr;
@@ -334,6 +344,16 @@ function selectCharacter(characterNumber) {
 
     mapRow = 1;
     mapCol = 1;
+
+    wolfImg.src = "./img/wolf-sprite.png";
+    WOLF.x = 950;
+    WOLF.y = 390;
+    WOLF.frame = 0;
+    WOLF.lastDamageTime = 0;
+
+    PLAYER_STATE.healthStage = 4;
+    updateHealthBar();
+
     updateMapBackground();
 }
 
@@ -469,6 +489,9 @@ function gameLoop() {
         animatePlayer();
     }
 
+    updateWolf();
+    updateWolfDamage();
+
     setTimeout(gameLoop, 1000 / GAME_CONFIG.gameSpeed);
 }
 
@@ -505,14 +528,148 @@ function Start() {
 
 // WOLF
 let wolf = document.getElementById("wolf");
+let wolfImg = document.getElementById("wolf-img");
+let health = document.getElementById("health");
+
+let WOLF = {
+    x: 900,
+    y: 390,
+    frame: 0,
+    frameCount: 4,
+    frameWidth: 85,
+    animTick: 0,
+    speed: 6,
+    active: false,
+    lastDamageTime: 0
+};
+
+let PLAYER_STATE = {
+    healthStage: 4
+};
 
 function updateWolfVisibility() {
     if (mapRow === 1 && mapCol === 0) {
         wolf.style.display = "block";
+        WOLF.active = true;
+        wolf.style.left = WOLF.x + "px";
+        wolf.style.top = WOLF.y + "px";
     } else {
         wolf.style.display = "none";
+        WOLF.active = false;
     }
 }
+
+function animateWolf() {
+    if (!WOLF.active) {
+        return;
+    }
+
+    WOLF.animTick++;
+
+    if (WOLF.animTick % 5 !== 0) {
+        return;
+    }
+
+    WOLF.frame++;
+    if (WOLF.frame >= WOLF.frameCount) {
+        WOLF.frame = 0;
+    }
+
+    wolfImg.style.left = -(WOLF.frame * WOLF.frameWidth) + "px";
+}
+
+function updateWolf() {
+    if (!WOLF.active) {
+        return;
+    }
+
+    let playerX = parseFloat(PLAYER.box.style.left);
+    let playerY = parseFloat(PLAYER.box.style.top);
+
+    if (isNaN(playerX) || isNaN(playerY)) {
+        return;
+    }
+
+    if (WOLF.x < playerX - 20) {
+        WOLF.x += WOLF.speed;
+    }
+
+    if (WOLF.x > playerX + 20) {
+        WOLF.x -= WOLF.speed;
+    }
+
+    if (WOLF.y < playerY - 10) {
+        WOLF.y += 3;
+    }
+
+    if (WOLF.y > playerY + 10) {
+        WOLF.y -= 3;
+    }
+
+    wolf.style.left = WOLF.x + "px";
+    wolf.style.top = WOLF.y + "px";
+
+    animateWolf();
+}
+
+function isWolfTouchingPlayer() {
+    const playerRect = {
+        left: PLAYER.box.offsetLeft,
+        top: PLAYER.box.offsetTop,
+        right: PLAYER.box.offsetLeft + PLAYER.box.clientWidth,
+        bottom: PLAYER.box.offsetTop + PLAYER.box.clientHeight
+    };
+
+    const wolfRect = {
+        left: wolf.offsetLeft,
+        top: wolf.offsetTop,
+        right: wolf.offsetLeft + wolf.clientWidth,
+        bottom: wolf.offsetTop + wolf.clientHeight
+    };
+
+    return rectsOverlap(playerRect, wolfRect);
+}
+
+function updateWolfDamage() {
+    if (!WOLF.active) {
+        return;
+    }
+
+    if (!isWolfTouchingPlayer()) {
+        return;
+    }
+
+    const now = Date.now();  // mit ki geholfen
+
+    if (now - WOLF.lastDamageTime >= 1000) {
+        WOLF.lastDamageTime = now;
+
+        if (PLAYER_STATE.healthStage > 1) {
+            PLAYER_STATE.healthStage--;
+            updateHealthBar();
+        }
+    }
+}
+
+// --> Health bar
+function updateHealthBar() {
+    if (PLAYER_STATE.healthStage === 4) {
+        health.src = "./img/healthbar-full.png";
+    }
+
+    if (PLAYER_STATE.healthStage === 3) {
+        health.src = "./img/healthbar-half.png";
+    }
+
+    if (PLAYER_STATE.healthStage === 2) {
+        health.src = "./img/healthbar-low.png";
+    }
+
+    if (PLAYER_STATE.healthStage <= 1) {
+        health.src = "./img/healthbar-gone.png";
+    }
+}
+
 
 // PORTAL
 let portal = document.getElementById("portal");
@@ -534,4 +691,63 @@ function updateCupVisibility() {
     } else {
         cup.style.display = "none";
     }
+}
+
+
+// BITTERSWEET ENDING
+
+function showGameOverBittersweet() {
+    gameStarted = false;
+
+    KEY_EVENTS.leftArrow = false;
+    KEY_EVENTS.rightArrow = false;
+    KEY_EVENTS.upArrow = false;
+    KEY_EVENTS.downArrow = false;
+
+    gameOverScreen.style.display = "flex";
+    gameOverScreen.style.animation = "gameOverBlackScreen 0.5s ease forwards";
+    endingTitle.innerHTML = "Bittersweet Ending";
+    endingText.innerHTML = "You ran in the meadow but never found the farm. You started a new life and tried to survive in the wilderness. You do well for a while and occasionally find other animals to befriend. Five months later, you go out one day to look for food and are attacked by a wolf pack. You and your friends died.";
+    gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
+    gameOverBox.style.border = "4px double gray";
+}
+
+// GOOD ENDING
+
+function showGameOverGoodEnding() {
+    gameStarted = false;
+
+    KEY_EVENTS.leftArrow = false;
+    KEY_EVENTS.rightArrow = false;
+    KEY_EVENTS.upArrow = false;
+    KEY_EVENTS.downArrow = false;
+
+    gameOverScreen.style.display = "flex";
+    gameOverScreen.style.animation = "gameOverBlackScreen 0.5s ease forwards";
+    endingTitle.innerHTML = "Good Ending";
+    endingText.innerHTML = "<p>You found the farm and got back home. All your friends are happy to see you again. You will spend the rest of your life happily on the farm. Congratulations!</p>"
+    gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
+    gameOverBox.style.border = "4px double green";
+}
+
+function isTouchingCup() {
+    if (mapRow !== 2 || mapCol !== 2) {
+        return false;
+    }
+
+    const playerRect = {
+        left: PLAYER.box.offsetLeft,
+        top: PLAYER.box.offsetTop,
+        right: PLAYER.box.offsetLeft + PLAYER.box.clientWidth,
+        bottom: PLAYER.box.offsetTop + PLAYER.box.clientHeight
+    };
+
+    const cupRect = {
+        left: cup.offsetLeft,
+        top: cup.offsetTop,
+        right: cup.offsetLeft + cup.clientWidth,
+        bottom: cup.offsetTop + cup.clientHeight
+    };
+
+    return rectsOverlap(playerRect, cupRect);
 }

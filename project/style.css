@@ -284,13 +284,19 @@ body {
     position: fixed;
     left: 58vw;
     top: 43vh;
+    width: 85px;
+    height: 90px;
+    overflow: hidden;
     display: none;
-    z-index: 100;
+    z-index: 210;
 }
 
 #wolf-img {
-    width: 8vw;
-    height: auto;
+    position: relative;
+    width: auto;
+    height: 180px;
+    left: 0px;
+    top: 0px;
 }
 
 /* Wolf - ENDE */
@@ -362,4 +368,77 @@ body {
     box-sizing: border-box;
     z-index: 120;
     pointer-events: none;
+}
+
+
+
+/* Game over screen */
+#game-over-screen {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.65);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#game-over-box {
+    width: 40vw;
+    min-width: 320px;
+    background-color: rgba(20, 20, 20, 0.8);
+    color: white;
+    border: 4px double gray;
+    border-radius: 25px;
+    padding: 40px;
+    text-align: center;
+    transform: translateY(80px);
+    opacity: 0;
+}
+
+#game-over-box h2 {
+    margin-top: 0;
+    font-size: 2.2rem;
+}
+
+#game-over-box p {
+    font-size: 1.3rem;
+    margin: 20px 0 30px 0;
+}
+
+#restart-button {
+    font-family: WoodsFont, Arial, sans-serif;
+    font-size: 1.2rem;
+    padding: 14px 28px;
+    border-radius: 16px;
+    border: 4px solid gray;
+    background-color: #111;
+    color: white;
+    cursor: pointer;
+}
+
+#restart-button:hover {
+    background-color: #222;
+}
+
+@keyframes gameOverFlyIn {
+    from {
+        transform: translateY(80px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes gameOverBlackScreen {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
