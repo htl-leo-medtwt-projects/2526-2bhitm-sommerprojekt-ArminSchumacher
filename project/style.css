@@ -5,6 +5,8 @@ body {
     background-image: url('./img/StartMap.png');
     background-attachment: fixed;
     background-size: cover;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 @font-face {
@@ -359,18 +361,6 @@ body {
 }
 
 /* Cup - ENDE */
-
-
-.wall-visible {
-    position: fixed;
-    background-color: rgba(80, 40, 0, 0.45);
-    border: 3px solid rgba(40, 20, 0, 0.8);
-    box-sizing: border-box;
-    z-index: 120;
-    pointer-events: none;
-}
-
-
 
 /* Game over screen */
 #game-over-screen {

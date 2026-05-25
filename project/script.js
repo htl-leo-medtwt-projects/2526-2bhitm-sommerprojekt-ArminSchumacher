@@ -25,6 +25,7 @@ let gameOverBox = document.getElementById("game-over-box");
 let gameOverScreen = document.getElementById("game-over-screen");
 let endingText = document.getElementById("ending-text");
 let endingTitle = document.getElementById("ending-title");
+let bridgeBroken = false;
 
 let PLAYER = {
     box: document.getElementById("player"),
@@ -58,7 +59,7 @@ const MAPS = [
     ["./img/CaveUndWeg.png", "./img/bear-map.png", "./img/farm.png"]
 ];
 
-//neu
+// WALLS
 function rectsOverlap(r1, r2) {
     return !(
         r1.right <= r2.left ||
@@ -176,6 +177,11 @@ function movePlayer(dx, dy, dr) {
 
     let nextX = currentX + dx;
 
+    if (mapRow === 0 && mapCol === 2 && dx > 0 && nextX >= 370 && !bridgeBroken) {
+        bridgeBroken = true;
+        document.body.style.backgroundImage = "url('./img/broken-bridge.png')";
+    }
+
     if (mapRow === 0 && mapCol === 0 && nextX < 120) {
         showGameOverBittersweet();
         return;
@@ -233,13 +239,17 @@ function drawVisibleWalls() {
 }
 
 function updateMapBackground() {
-    document.body.style.backgroundImage = `url('${MAPS[mapRow][mapCol]}')`;
+    if (mapRow === 0 && mapCol === 2 && bridgeBroken) {
+        document.body.style.backgroundImage = "url('./img/broken-bridge.png')";
+    } else {
+        document.body.style.backgroundImage = `url('${MAPS[mapRow][mapCol]}')`;
+    }
+
     updateWolfVisibility();
     updatePortalVisibility();
     updateCupVisibility()
     drawVisibleWalls();
 }
-//neu
 
 // KEYBOARD INPUT
 document.onkeydown = keyListenerDown;
@@ -354,6 +364,7 @@ function selectCharacter(characterNumber) {
     PLAYER_STATE.healthStage = 4;
     updateHealthBar();
 
+    bridgeBroken = false;
     updateMapBackground();
 }
 
@@ -667,6 +678,7 @@ function updateHealthBar() {
 
     if (PLAYER_STATE.healthStage <= 1) {
         health.src = "./img/healthbar-gone.png";
+        showGameOverWolfEnding();
     }
 }
 
@@ -695,7 +707,6 @@ function updateCupVisibility() {
 
 
 // BITTERSWEET ENDING
-
 function showGameOverBittersweet() {
     gameStarted = false;
 
@@ -713,7 +724,6 @@ function showGameOverBittersweet() {
 }
 
 // GOOD ENDING
-
 function showGameOverGoodEnding() {
     gameStarted = false;
 
@@ -750,4 +760,21 @@ function isTouchingCup() {
     };
 
     return rectsOverlap(playerRect, cupRect);
+}
+
+// BAD ENDING (Wolf)
+function showGameOverWolfEnding() {
+    gameStarted = false;
+
+    KEY_EVENTS.leftArrow = false;
+    KEY_EVENTS.rightArrow = false;
+    KEY_EVENTS.upArrow = false;
+    KEY_EVENTS.downArrow = false;
+
+    gameOverScreen.style.display = "flex";
+    gameOverScreen.style.animation = "gameOverBlackScreen 0.5s ease forwards";
+    endingTitle.innerHTML = "Bad Ending";
+    endingText.innerHTML = "You died. <br>You got eaten by the wolf and never found the farm.";
+    gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
+    gameOverBox.style.border = "4px double red";
 }
