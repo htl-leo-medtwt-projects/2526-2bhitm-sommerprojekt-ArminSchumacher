@@ -106,7 +106,7 @@ const MAP_WALLS = {
         { left: 300, top: 0, width: 315, height: 200 },
         { left: 1010, top: 0, width: 450, height: 290 },
         { left: 750, top: 0, width: 450, height: 190 },
-        { left: 0, top: 460, width: 280, height: 540 },
+        { left: 0, top: 475, width: 280, height: 540 },
         { left: 280, top: 660, width: 280, height: 240 },
         { left: 1180, top: 440, width: 420, height: 550 },
         { left: 800, top: 650, width: 420, height: 340 }
@@ -135,6 +135,7 @@ const MAP_WALLS = {
         { left: 1170, top: 0, width: 400, height: 350 }
     ],
 
+    // Canyon
     "0-2": [
         { left: 0, top: 0, width: 1050, height: 350 },
         { left: 230, top: 0, width: 1050, height: 400 },
@@ -224,6 +225,8 @@ function drawVisibleWalls() {
 function updateMapBackground() {
     document.body.style.backgroundImage = `url('${MAPS[mapRow][mapCol]}')`;
     updateWolfVisibility();
+    updatePortalVisibility();
+    updateCupVisibility()
     drawVisibleWalls();
 }
 //neu
@@ -352,11 +355,10 @@ function setSpriteDirection(direction) {
     }
 }
 
-// CHANGE MAP
+// CHANGE MAP & THOUGHT
 function changeMap(direction) {
     if (direction === "left" && mapCol > 0) {
         mapCol--;
-        loadThoughtById(3);
         thoughtBubble.style.animation = "none";
         thoughtBubble.offsetWidth;
         thoughtBubble.style.display = "flex";
@@ -365,11 +367,7 @@ function changeMap(direction) {
 
     if (direction === "right" && mapCol < MAPS[0].length - 1) {
         mapCol++;
-        if (mapRow === 1 && mapCol === 1) {
-            loadThoughtById(1);
-        } else {
-            loadThoughtById(5);
-        }
+
         thoughtBubble.style.animation = "none";
         thoughtBubble.offsetWidth;
         thoughtBubble.style.display = "flex";
@@ -378,11 +376,6 @@ function changeMap(direction) {
 
     if (direction === "up" && mapRow > 0) {
         mapRow--;
-        if (mapRow === 1 && mapCol === 1) {
-            loadThoughtById(1);
-        } else {
-            loadThoughtById(4);
-        }
         thoughtBubble.style.animation = "none";
         thoughtBubble.offsetWidth;
         thoughtBubble.style.display = "flex";
@@ -391,15 +384,39 @@ function changeMap(direction) {
 
     if (direction === "down" && mapRow < MAPS.length - 1) {
         mapRow++;
-        if (mapRow === 1 && mapCol === 1) {
-            loadThoughtById(1);
-        } else {
-            loadThoughtById(2);
-        }
+
         thoughtBubble.style.animation = "none";
         thoughtBubble.offsetWidth;
         thoughtBubble.style.display = "flex";
         thoughtBubble.style.animation = "fadeInThought 0.75s ease 0.3s forwards";
+    }
+
+    if (mapRow === 1 && mapCol === 1) {
+        loadThoughtById(1);
+    }
+
+    if (mapRow === 1 && mapCol === 2) {
+        loadThoughtById(5);
+    }
+
+    if (mapRow === 1 && mapCol === 0) {
+        loadThoughtById(3);
+    }
+
+    if (mapRow === 0 && mapCol === 1) {
+        loadThoughtById(4);
+    }
+
+    if (mapRow === 0 && mapCol === 0) {
+        loadThoughtById(6);
+    }
+
+    if (mapRow === 0 && mapCol === 2) {
+        loadThoughtById(7);
+    }
+
+    if (mapRow === 2 && mapCol === 2) {
+        loadThoughtById(8);
     }
 
     updateMapBackground();
@@ -494,5 +511,27 @@ function updateWolfVisibility() {
         wolf.style.display = "block";
     } else {
         wolf.style.display = "none";
+    }
+}
+
+// PORTAL
+let portal = document.getElementById("portal");
+
+function updatePortalVisibility() {
+    if (mapRow === 0 && mapCol === 2) {
+        portal.style.display = "block";
+    } else {
+        portal.style.display = "none";
+    }
+}
+
+// POKAL
+let cup = document.getElementById("cup");
+
+function updateCupVisibility() {
+    if (mapRow === 2 && mapCol === 2) {
+        cup.style.display = "block";
+    } else {
+        cup.style.display = "none";
     }
 }

@@ -229,6 +229,15 @@ body {
     z-index: 300;
 }
 
+#thoughts {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.8rem;
+    text-align: center;
+}
+
 @keyframes fadeInThought {
     from {
         opacity: 0;
@@ -247,15 +256,6 @@ body {
     left: 91%;
     transform: rotate(15deg);
     height: 16vh;
-}
-
-#thoughts {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.8rem;
-    text-align: center;
 }
 
 /* Thought Bubble - ENDE */
@@ -279,6 +279,7 @@ body {
 /* Health Bar - ENDE */
 
 /* Wolf - ANFANG */
+
 #wolf {
     position: fixed;
     left: 58vw;
@@ -293,6 +294,65 @@ body {
 }
 
 /* Wolf - ENDE */
+
+
+/* Portal - ANFANG */
+
+#portal {
+    position: fixed;
+    left: 47vw;
+    top: 27vh;
+    display: none;
+    z-index: 100;
+}
+
+#portal-img {
+    width: 14vw;
+    height: auto;
+}
+
+/* Portal - ENDE */
+
+
+/* Cup - ANFANG */
+
+#cup {
+    position: fixed;
+    left: 51vw;
+    top: 48vh;
+    display: none;
+    z-index: 100;
+    animation: cupBounce 4s ease-in-out infinite;
+}
+
+#cup-img {
+    width: 7vw;
+    height: auto;
+}
+
+@keyframes cupBounce {
+    0% {
+        transform: translateY(0px);
+    }
+
+    25% {
+        transform: translateY(8px);
+    }
+
+    50% {
+        transform: translateY(0px);
+    }
+
+    75% {
+        transform: translateY(6px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* Cup - ENDE */
 
 
 .wall-visible {
