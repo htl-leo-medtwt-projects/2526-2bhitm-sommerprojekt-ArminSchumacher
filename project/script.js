@@ -168,30 +168,6 @@ const MAP_WALLS = {
     ]
 };
 
-// BRÜCKEN TOD
-function showBrokenBridgeDeath() {
-    bridgeBroken = true;
-    document.body.style.backgroundImage = "url('./img/broken-bridge.png')";
-
-    gameStarted = false;
-
-    KEY_EVENTS.leftArrow = false;
-    KEY_EVENTS.rightArrow = false;
-    KEY_EVENTS.upArrow = false;
-    KEY_EVENTS.downArrow = false;
-
-    setTimeout(() => {
-        PLAYER.box.style.animation = "deathAnimation 0.6s ease forwards";
-
-        gameOverScreen.style.display = "flex";
-        gameOverScreen.style.animation = "gameOverBlackScreen 0.5s ease forwards";
-        endingTitle.innerHTML = "Bad Ending";
-        endingText.innerHTML = "You died. <br>The bridge broke and you fell into the abyss.";
-        gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
-        gameOverBox.style.border = "4px double red";
-    }, 600);
-}
-
 function movePlayer(dx, dy, dr) {
     let currentX = parseFloat(PLAYER.box.style.left);
     let currentY = parseFloat(PLAYER.box.style.top);
@@ -201,6 +177,21 @@ function movePlayer(dx, dy, dr) {
 
     let nextX = currentX + dx;
     let nextY = currentY + dy;
+
+    // CAVE DEATH
+    if (
+        mapRow === 0 &&
+        mapCol === 1 &&
+        nextX >= 1000 &&
+        nextX <= 1185 &&
+        nextY >= 265 &&
+        nextY <= 290
+    ) {
+        PLAYER.box.style.left = nextX + "px";
+        PLAYER.box.style.top = nextY + "px";
+        showCaveDeath();
+        return;
+    }
 
     // Linke Brücke
     if (mapRow === 0 && mapCol === 2 && dx > 0 && nextX >= 380 && !bridgeBroken) {
@@ -751,10 +742,11 @@ function showGameOverBittersweet() {
 
     gameOverScreen.style.display = "flex";
     gameOverScreen.style.animation = "gameOverBlackScreen 0.5s ease forwards";
-    endingTitle.innerHTML = "Bittersweet Ending";
-    endingText.innerHTML = "You ran in the meadow but never found the farm. You started a new life and tried to survive in the wilderness. You do well for a while and occasionally find other animals to befriend. Five months later, you go out one day to look for food and are attacked by a wolf pack. You and your friends died.";
+
+    gameOverBox.style.backgroundImage = "url('./img/BittersweetEnding.png')";
+    endingText.textContent = "You ran in the meadow but never found the farm. You started a new life and tried to survive in the wilderness. You do well for a while and occasionally find other animals to befriend. Five months later, you go out one day to look for food and are attacked by a wolf pack. You and your friends died.";
+
     gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
-    gameOverBox.style.border = "4px double gray";
 }
 
 // GOOD ENDING
@@ -768,10 +760,11 @@ function showGameOverGoodEnding() {
 
     gameOverScreen.style.display = "flex";
     gameOverScreen.style.animation = "gameOverBlackScreen 0.5s ease forwards";
-    endingTitle.innerHTML = "Good Ending";
-    endingText.innerHTML = "<p>You found the farm and got back home. All your friends are happy to see you again. You will spend the rest of your life happily on the farm. Congratulations!</p>"
+
+    gameOverBox.style.backgroundImage = "url('./img/GoodEnding.png')";
+    endingText.textContent = "You found the farm and got back home. All your friends are happy to see you again. You will spend the rest of your life happily on the farm. Congratulations!";
+
     gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
-    gameOverBox.style.border = "4px double green";
 }
 
 function isTouchingCup() {
@@ -807,8 +800,55 @@ function showGameOverWolfEnding() {
 
     gameOverScreen.style.display = "flex";
     gameOverScreen.style.animation = "gameOverBlackScreen 0.5s ease forwards";
-    endingTitle.innerHTML = "Bad Ending";
-    endingText.innerHTML = "You died. <br>You got eaten by the wolf and never found the farm.";
+
+    gameOverBox.style.backgroundImage = "url('./img/BadEnding.png')";
+    endingText.innerHTML = "You died.<br>You got eaten by the wolf and never found the farm.";
+
     gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
-    gameOverBox.style.border = "4px double red";
+}
+
+// BAD ENDING (Brücke)
+function showBrokenBridgeDeath() {
+    bridgeBroken = true;
+    document.body.style.backgroundImage = "url('./img/broken-bridge.png')";
+
+    gameStarted = false;
+
+    KEY_EVENTS.leftArrow = false;
+    KEY_EVENTS.rightArrow = false;
+    KEY_EVENTS.upArrow = false;
+    KEY_EVENTS.downArrow = false;
+
+    setTimeout(() => {
+        PLAYER.box.style.animation = "deathAnimation 0.6s ease forwards";
+
+        gameOverScreen.style.display = "flex";
+        gameOverScreen.style.animation = "gameOverBlackScreen 0.5s ease forwards";
+
+        gameOverBox.style.backgroundImage = "url('./img/BadEnding.png')";
+        endingText.innerHTML = "You died.<br>The bridge broke and you fell <br>into the abyss.";
+
+        gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
+    }, 600);
+}
+
+// BAD ENDING (Höhle)
+function showCaveDeath() {
+    gameStarted = false;
+
+    KEY_EVENTS.leftArrow = false;
+    KEY_EVENTS.rightArrow = false;
+    KEY_EVENTS.upArrow = false;
+    KEY_EVENTS.downArrow = false;
+
+    PLAYER.box.style.display = "none";
+
+    setTimeout(() => {
+        gameOverScreen.style.display = "flex";
+        gameOverScreen.style.animation = "gameOverBlackScreen 0.5s ease forwards";
+
+        gameOverBox.style.backgroundImage = "url('./img/BadEnding.png')";
+        endingText.innerHTML = "You went into the cave and explored it. After a while, you realized you were lost in the dark and couldn't find your way out. <br>You starved to death in the cave and never made it back to the farm.";
+        gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
+    }, 2000);
 }

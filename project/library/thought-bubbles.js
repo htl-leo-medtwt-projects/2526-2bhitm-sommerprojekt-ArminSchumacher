@@ -15,7 +15,7 @@ const thoughtBubbles = [
   },
   {
     "id": 4,
-    "text": "Which way should I go?"
+    "text": "Which way should I go? I wonder what's in the cave..."
   },
   {
     "id": 5,
@@ -31,7 +31,7 @@ const thoughtBubbles = [
   },
   {
     "id": 8,
-    "text": "I made it... I am home!"
+    "text": "The Owl was right i shouldn't trust strangers. She lied about it. I only need to trust myself. I made it I am home!"
   },
 
   // Owl Paragraph 
@@ -45,18 +45,26 @@ const thoughtBubbles = [
   },
   {
     "id": 18,
-    "text": "Trusting a stranger can lead to death in this forest. Do you see those blue dots in the woods, these are souls from the last visitors"
-  }, ,
+    "text": "Trusting a stranger can lead to death in life. You see the blue dots in the woods? These are souls from the last visitors."
+  },
   {
     "id": 19,
     "text": "But trust is the only chance life offers us, right?"
   },
   {
     "id": 20,
-    "text": "Wha.. ehm I guess...? A strange way to start a conversation."
+    "text": "Wha.. ehm I guess...? I'm scared. Strange way to start a conversation."
   },
   {
     "id": 21,
-    "text": "If you choose the way on my right, the forest will get darker and darker. But as the saying goes, after every tunnel comes light."
+    "text": "If you choose the path to my right, you'll need a lot of courage. But courage leads to freedom."
+  },
+  {
+    "id": 22,
+    "text": "If you choose the path to my left, you'll need a lot of wisdom. But don't get lost in your thoughts."
+  },
+  {
+    "id": 23,
+    "text": "Which path will you choose?"
   }
 ];
