@@ -177,9 +177,26 @@ function movePlayer(dx, dy, dr) {
 
     let nextX = currentX + dx;
 
+    // BROKEN BRIDGE    
     if (mapRow === 0 && mapCol === 2 && dx > 0 && nextX >= 370 && !bridgeBroken) {
         bridgeBroken = true;
         document.body.style.backgroundImage = "url('./img/broken-bridge.png')";
+
+        gameStarted = false;
+
+        KEY_EVENTS.leftArrow = false;
+        KEY_EVENTS.rightArrow = false;
+        KEY_EVENTS.upArrow = false;
+        KEY_EVENTS.downArrow = false;
+
+        PLAYER.box.style.display = "none";
+
+        gameOverScreen.style.display = "flex";
+        gameOverScreen.style.animation = "gameOverBlackScreen 0.5s ease forwards";
+        endingTitle.innerHTML = "Bad Ending";
+        endingText.innerHTML = "You died. <br>The bridge broke and you fell into the abyss.";
+        gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
+        gameOverBox.style.border = "4px double red";
     }
 
     if (mapRow === 0 && mapCol === 0 && nextX < 120) {
