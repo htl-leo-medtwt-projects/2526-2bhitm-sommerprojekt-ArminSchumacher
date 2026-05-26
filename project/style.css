@@ -9,11 +9,13 @@ body {
     overflow-y: hidden;
 }
 
+/* Font */
 @font-face {
     font-family: WoodsFont;
     src: url(./font/JosefinSlab-Bold.ttf);
 }
 
+/* Nebel - ANFANG */
 #fogDown {
     position: fixed;
     top: 16vh;
@@ -77,6 +79,8 @@ body {
         opacity: 0.85;
     }
 }
+
+/* Nebel - ENDE */
 
 
 /* Start Screen & NAV - ANFANG*/
@@ -362,7 +366,7 @@ body {
 
 /* Cup - ENDE */
 
-/* Game over screen */
+/* Game over screen - ANFANG */
 #game-over-screen {
     position: fixed;
     inset: 0;
@@ -432,3 +436,5 @@ body {
         opacity: 1;
     }
 }
+
+/* Game over screen - ENDE */

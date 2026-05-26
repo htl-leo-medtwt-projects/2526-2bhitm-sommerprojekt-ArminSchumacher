@@ -199,6 +199,7 @@ function movePlayer(dx, dy, dr) {
         gameOverBox.style.border = "4px double red";
     }
 
+    // BITTERSWEET ENDING
     if (mapRow === 0 && mapCol === 0 && nextX < 120) {
         showGameOverBittersweet();
         return;
@@ -229,6 +230,7 @@ function movePlayer(dx, dy, dr) {
     PLAYER.box.style.left = nextX + "px";
     PLAYER.box.style.top = nextY + "px";
 
+    // GOOD ENDING
     if (isTouchingCup()) {
         showGameOverGoodEnding();
         return;
@@ -239,21 +241,21 @@ function movePlayer(dx, dy, dr) {
     }
 }
 
-function drawVisibleWalls() {
-    document.querySelectorAll(".wall-visible").forEach(wall => wall.remove());
+// DEBUGGING WALLS SICHTBAR MACHEN
 
-    const walls = getWallsForCurrentMap();
-
-    for (const wall of walls) {
-        const visibleWall = document.createElement("div");
-        visibleWall.className = "wall-visible";
-        visibleWall.style.left = wall.left + "px";
-        visibleWall.style.top = wall.top + "px";
-        visibleWall.style.width = wall.width + "px";
-        visibleWall.style.height = wall.height + "px";
-        document.body.appendChild(visibleWall);
-    }
-}
+// function drawVisibleWalls() {
+//     document.querySelectorAll(".wall-visible").forEach(wall => wall.remove());
+//     const walls = getWallsForCurrentMap();
+//     for (const wall of walls) {
+//         const visibleWall = document.createElement("div");
+//         visibleWall.className = "wall-visible";
+//         visibleWall.style.left = wall.left + "px";
+//         visibleWall.style.top = wall.top + "px";
+//         visibleWall.style.width = wall.width + "px";
+//         visibleWall.style.height = wall.height + "px";
+//         document.body.appendChild(visibleWall);
+//     }
+// }
 
 function updateMapBackground() {
     if (mapRow === 0 && mapCol === 2 && bridgeBroken) {
@@ -523,7 +525,7 @@ function gameLoop() {
     setTimeout(gameLoop, 1000 / GAME_CONFIG.gameSpeed);
 }
 
-// Startbutton function
+// STARTBUTTON
 function Start() {
     navTree.style.transition = "transform 2s ease";
     navTree.style.transform = "translateX(-100vw)";
@@ -679,7 +681,7 @@ function updateWolfDamage() {
     }
 }
 
-// --> Health bar
+// HEALTHBAR
 function updateHealthBar() {
     if (PLAYER_STATE.healthStage === 4) {
         health.src = "./img/healthbar-full.png";
