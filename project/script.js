@@ -168,6 +168,30 @@ const MAP_WALLS = {
     ]
 };
 
+// BRÜCKEN TOD
+function showBrokenBridgeDeath() {
+    bridgeBroken = true;
+    document.body.style.backgroundImage = "url('./img/broken-bridge.png')";
+
+    gameStarted = false;
+
+    KEY_EVENTS.leftArrow = false;
+    KEY_EVENTS.rightArrow = false;
+    KEY_EVENTS.upArrow = false;
+    KEY_EVENTS.downArrow = false;
+
+    setTimeout(() => {
+        PLAYER.box.style.animation = "deathAnimation 0.6s ease forwards";
+
+        gameOverScreen.style.display = "flex";
+        gameOverScreen.style.animation = "gameOverBlackScreen 0.5s ease forwards";
+        endingTitle.innerHTML = "Bad Ending";
+        endingText.innerHTML = "You died. <br>The bridge broke and you fell into the abyss.";
+        gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
+        gameOverBox.style.border = "4px double red";
+    }, 600);
+}
+
 function movePlayer(dx, dy, dr) {
     let currentX = parseFloat(PLAYER.box.style.left);
     let currentY = parseFloat(PLAYER.box.style.top);
@@ -176,30 +200,24 @@ function movePlayer(dx, dy, dr) {
     if (isNaN(currentY)) currentY = 400;
 
     let nextX = currentX + dx;
+    let nextY = currentY + dy;
 
-    // BROKEN BRIDGE    
-    if (mapRow === 0 && mapCol === 2 && dx > 0 && nextX >= 370 && !bridgeBroken) {
-        bridgeBroken = true;
-        document.body.style.backgroundImage = "url('./img/broken-bridge.png')";
-
-        gameStarted = false;
-
-        KEY_EVENTS.leftArrow = false;
-        KEY_EVENTS.rightArrow = false;
-        KEY_EVENTS.upArrow = false;
-        KEY_EVENTS.downArrow = false;
-
-        PLAYER.box.style.display = "none";
-
-        gameOverScreen.style.display = "flex";
-        gameOverScreen.style.animation = "gameOverBlackScreen 0.5s ease forwards";
-        endingTitle.innerHTML = "Bad Ending";
-        endingText.innerHTML = "You died. <br>The bridge broke and you fell into the abyss.";
-        gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
-        gameOverBox.style.border = "4px double red";
+    // Linke Brücke
+    if (mapRow === 0 && mapCol === 2 && dx > 0 && nextX >= 380 && !bridgeBroken) {
+        PLAYER.box.style.left = nextX + "px";
+        PLAYER.box.style.top = currentY + "px";
+        showBrokenBridgeDeath();
+        return;
     }
 
-    // BITTERSWEET ENDING
+    // Untere Brücke
+    if (mapRow === 0 && mapCol === 2 && dy < 0 && nextY <= 660 && !bridgeBroken) {
+        PLAYER.box.style.left = currentX + "px";
+        PLAYER.box.style.top = nextY + "px";
+        showBrokenBridgeDeath();
+        return;
+    }
+
     if (mapRow === 0 && mapCol === 0 && nextX < 120) {
         showGameOverBittersweet();
         return;
@@ -215,8 +233,6 @@ function movePlayer(dx, dy, dr) {
         nextX = currentX;
     }
 
-    let nextY = currentY + dy;
-
     if (nextY < 0) {
         changeMap("up");
         nextY = window.innerHeight - PLAYER.box.offsetHeight - 10;
@@ -230,7 +246,6 @@ function movePlayer(dx, dy, dr) {
     PLAYER.box.style.left = nextX + "px";
     PLAYER.box.style.top = nextY + "px";
 
-    // GOOD ENDING
     if (isTouchingCup()) {
         showGameOverGoodEnding();
         return;
@@ -243,19 +258,19 @@ function movePlayer(dx, dy, dr) {
 
 // DEBUGGING WALLS SICHTBAR MACHEN
 
-// function drawVisibleWalls() {
-//     document.querySelectorAll(".wall-visible").forEach(wall => wall.remove());
-//     const walls = getWallsForCurrentMap();
-//     for (const wall of walls) {
-//         const visibleWall = document.createElement("div");
-//         visibleWall.className = "wall-visible";
-//         visibleWall.style.left = wall.left + "px";
-//         visibleWall.style.top = wall.top + "px";
-//         visibleWall.style.width = wall.width + "px";
-//         visibleWall.style.height = wall.height + "px";
-//         document.body.appendChild(visibleWall);
-//     }
-// }
+function drawVisibleWalls() {
+    document.querySelectorAll(".wall-visible").forEach(wall => wall.remove());
+    const walls = getWallsForCurrentMap();
+    for (const wall of walls) {
+        const visibleWall = document.createElement("div");
+        visibleWall.className = "wall-visible";
+        visibleWall.style.left = wall.left + "px";
+        visibleWall.style.top = wall.top + "px";
+        visibleWall.style.width = wall.width + "px";
+        visibleWall.style.height = wall.height + "px";
+        document.body.appendChild(visibleWall);
+    }
+}
 
 function updateMapBackground() {
     if (mapRow === 0 && mapCol === 2 && bridgeBroken) {

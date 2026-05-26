@@ -437,4 +437,17 @@ body {
     }
 }
 
+/* Für Spieler der die Brücke runterfällt */
+@keyframes deathAnimation {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+}
+
 /* Game over screen - ENDE */
