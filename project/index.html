@@ -87,7 +87,27 @@
     <div id="game-over-screen">
         <div id="game-over-box">
             <p id="ending-text"></p>
-            <button id="restart-button" onclick="location.reload()">Play again</button>
+
+            <div id="ending-buttons">
+                <button id="restart-button" onclick="location.reload()">Play again</button>
+                <button id="leaderboard-button" onclick="openLeaderboard()">Leaderboard</button>
+            </div>
+        </div>
+
+        <div id="leaderboard-screen">
+            <div id="leaderboard-board">
+                <h2 id="leaderboard-title">Leaderboard</h2>
+
+                <div id="leaderboard-name-entry">
+                    <p id="leaderboard-name-label">Enter your name:</p>
+                    <input type="text" id="leaderboard-name-input" maxlength="20" placeholder="Your name">
+                    <button id="leaderboard-save-button" onclick="saveLeaderboardName()">Save</button>
+                </div>
+
+                <div id="leaderboard-list"></div>
+
+                <button id="leaderboard-back-button" onclick="closeLeaderboard()">Back</button>
+            </div>
         </div>
     </div>
 </body>

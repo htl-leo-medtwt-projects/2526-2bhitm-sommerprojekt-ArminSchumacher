@@ -38,6 +38,19 @@ let owlChoice = null;
 thoughtNextButton.style.display = "none";
 const OWL_DIALOGUE_IDS = [16, 17, 18, 19, 20, 21, 22, 23];
 
+// leaderboard variablen
+let leaderboardScreen = document.getElementById("leaderboard-screen");
+let leaderboardList = document.getElementById("leaderboard-list");
+let leaderboardNameEntry = document.getElementById("leaderboard-name-entry");
+let leaderboardNameInput = document.getElementById("leaderboard-name-input");
+
+let runStartTime = null;
+let finishedRunTime = null;
+let goodEndingReached = false;
+let leaderboardSavedThisRun = false;
+
+const LEADERBOARD_KEY = "whisperingWoodsLeaderboard";
+
 let PLAYER = {
     box: document.getElementById("player"),
     spriteImg: document.getElementById("spriteImg"),
@@ -217,7 +230,7 @@ function movePlayer(dx, dy, dr) {
         return;
     }
 
-    if ( (mapRow === 2 && mapCol === 2) || (mapRow === 0 && mapCol === 2) ) {
+    if ((mapRow === 2 && mapCol === 2) || (mapRow === 0 && mapCol === 2)) {
         thoughtNextButton.style.display = "none";
         thoughts.style.top = "40%";
     }
@@ -487,6 +500,12 @@ function selectCharacter(characterNumber) {
 
     thoughtBubble.style.display = "flex";
     thoughtBubble.style.animation = "fadeInThought 0.75s ease 1s forwards";
+
+    // Zeit aufzeichenn
+    runStartTime = Date.now();
+    finishedRunTime = null;
+    goodEndingReached = false;
+    leaderboardSavedThisRun = false;
 
     gameStarted = true;
     gameLoop();
@@ -861,6 +880,11 @@ function showGameOverBittersweet() {
     KEY_EVENTS.upArrow = false;
     KEY_EVENTS.downArrow = false;
 
+    // Ende nicht erreicht: kein Leaderboard
+    leaderboardScreen.style.display = "none";
+    gameOverBox.style.display = "block";
+    goodEndingReached = false;
+
     gameOverScreen.style.display = "flex";
     gameOverScreen.style.animation = "gameOverBlackScreen 0.5s ease forwards";
 
@@ -868,6 +892,101 @@ function showGameOverBittersweet() {
     endingText.textContent = "You ran in the meadow but never found the farm. You started a new life and tried to survive in the wilderness. You do well for a while and occasionally find other animals to befriend. Five months later, you go out one day to look for food and are attacked by a wolf pack. You and your friends died.";
 
     gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
+}
+
+// LEADERBOARD
+function formatTime(ms) {
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
+
+function getLeaderboardEntries() {
+    const raw = localStorage.getItem(LEADERBOARD_KEY);
+
+    if (!raw) {
+        return [];
+    }
+
+    try {
+        return JSON.parse(raw);
+    } catch (error) {
+        return [];
+    }
+}
+
+function saveLeaderboardEntries(entries) {
+    localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(entries));
+}
+
+function addLeaderboardEntry(name, timeMs) {
+    const entries = getLeaderboardEntries();
+
+    entries.push({
+        name: name,
+        timeMs: timeMs
+    });
+
+    entries.sort((a, b) => a.timeMs - b.timeMs);
+    saveLeaderboardEntries(entries.slice(0, 10));
+}
+
+function renderLeaderboard() {
+    const entries = getLeaderboardEntries();
+
+    if (entries.length === 0) {
+        leaderboardList.innerHTML = "<p>No times saved yet.</p>";
+        return;
+    }
+
+    let html = "<ol>";
+
+    for (const entry of entries) {
+        html += `<li>${entry.name} — ${formatTime(entry.timeMs)}</li>`;
+    }
+
+    html += "</ol>";
+    leaderboardList.innerHTML = html;
+}
+
+function openLeaderboard() {
+    gameOverBox.style.display = "none";
+    leaderboardScreen.style.display = "flex";
+
+    if (goodEndingReached && !leaderboardSavedThisRun && finishedRunTime !== null) {
+        leaderboardList.style.display = "none";
+        leaderboardNameEntry.style.display = "flex";
+        leaderboardNameInput.value = "";
+        leaderboardNameInput.focus();
+    } else {
+        leaderboardNameEntry.style.display = "none";
+        leaderboardList.style.display = "block";
+        renderLeaderboard();
+    }
+}
+
+function saveLeaderboardName() {
+    let playerName = leaderboardNameInput.value.trim();
+
+    if (playerName === "") {
+        playerName = "Anonymous";
+    }
+
+    addLeaderboardEntry(playerName, finishedRunTime);
+    leaderboardSavedThisRun = true;
+
+    leaderboardNameEntry.style.display = "none";
+    leaderboardList.style.display = "block";
+    renderLeaderboard();
+}
+
+function closeLeaderboard() {
+    leaderboardScreen.style.display = "none";
+    leaderboardNameEntry.style.display = "none";
+    leaderboardList.style.display = "none";
+    gameOverBox.style.display = "block";
 }
 
 // GOOD ENDING
@@ -879,8 +998,17 @@ function showGameOverGoodEnding() {
     KEY_EVENTS.upArrow = false;
     KEY_EVENTS.downArrow = false;
 
+    if (runStartTime !== null && finishedRunTime === null) {
+        finishedRunTime = Date.now() - runStartTime;
+    }
+
+    goodEndingReached = true;
+
     gameOverScreen.style.display = "flex";
     gameOverScreen.style.animation = "gameOverBlackScreen 0.5s ease forwards";
+
+    leaderboardScreen.style.display = "none";
+    gameOverBox.style.display = "block";
 
     gameOverBox.style.backgroundImage = "url('./img/GoodEnding.png')";
     endingText.textContent = "You found the farm and got back home. All your friends are happy to see you again. You will spend the rest of your life happily on the farm. Congratulations!";
@@ -919,6 +1047,11 @@ function showGameOverWolfEnding() {
     KEY_EVENTS.upArrow = false;
     KEY_EVENTS.downArrow = false;
 
+    // Ende nicht erreicht: kein Leaderboard
+    leaderboardScreen.style.display = "none";
+    gameOverBox.style.display = "block";
+    goodEndingReached = false;
+
     gameOverScreen.style.display = "flex";
     gameOverScreen.style.animation = "gameOverBlackScreen 0.5s ease forwards";
 
@@ -939,6 +1072,11 @@ function showBrokenBridgeDeath() {
     KEY_EVENTS.rightArrow = false;
     KEY_EVENTS.upArrow = false;
     KEY_EVENTS.downArrow = false;
+
+    // Ende nicht erreicht: kein Leaderboard
+    leaderboardScreen.style.display = "none";
+    gameOverBox.style.display = "block";
+    goodEndingReached = false;
 
     setTimeout(() => {
         PLAYER.box.style.animation = "deathAnimation 0.6s ease forwards";
@@ -961,6 +1099,11 @@ function showCaveDeath() {
     KEY_EVENTS.rightArrow = false;
     KEY_EVENTS.upArrow = false;
     KEY_EVENTS.downArrow = false;
+
+    // Ende nicht erreicht: kein Leaderboard
+    leaderboardScreen.style.display = "none";
+    gameOverBox.style.display = "block";
+    goodEndingReached = false;
 
     PLAYER.box.style.display = "none";
 
