@@ -20,12 +20,23 @@ let characterSelection = document.getElementById("character-selection");
 let fogDown = document.getElementById("fogDown");
 let fogUp = document.getElementById("fogUp");
 let thoughtBubble = document.getElementById("thought-bubble");
+let thoughts = document.getElementById("thoughts");
+let bubblePic = document.getElementById("bubblePic");
+let thoughtNextButton = document.getElementById("thought-next");
+let thoughtChoiceButtons = document.getElementById("thought-choice-buttons");
 let healthBar = document.getElementById("health-bar");
 let gameOverBox = document.getElementById("game-over-box");
 let gameOverScreen = document.getElementById("game-over-screen");
 let endingText = document.getElementById("ending-text");
 let endingTitle = document.getElementById("ending-title");
 let bridgeBroken = false;
+let owlDialogueActive = false;
+let owlDialogueFinished = false;
+let owlDialogueIndex = 0;
+let owlChoice = null;
+
+thoughtNextButton.style.display = "none";
+const OWL_DIALOGUE_IDS = [16, 17, 18, 19, 20, 21, 22, 23];
 
 let PLAYER = {
     box: document.getElementById("player"),
@@ -75,7 +86,19 @@ function getCurrentMapKey() {
 
 function getWallsForCurrentMap() {
     const mapKey = getCurrentMapKey();
-    return MAP_WALLS[mapKey] || [];
+    let walls = [...(MAP_WALLS[mapKey] || [])];
+
+    if (mapKey === "1-2" && owlChoice === "up") {
+        // Sperrt den Weg nach unten
+        walls.push({ left: 620, top: 440, width: 400, height: 90 });
+    }
+
+    if (mapKey === "1-2" && owlChoice === "down") {
+        // Sperrt den Weg nach oben
+        walls.push({ left: 620, top: 200, width: 400, height: 90 });
+    }
+
+    return walls;
 }
 
 function wouldCollideWithAnyWall(nextLeft, nextTop) {
@@ -178,6 +201,27 @@ function movePlayer(dx, dy, dr) {
     let nextX = currentX + dx;
     let nextY = currentY + dy;
 
+    // OWL
+    if (
+        mapRow === 1 &&
+        mapCol === 2 &&
+        nextX >= 730 &&
+        nextX <= 760 &&
+        nextY >= 310 &&
+        nextY <= 370 &&
+        !owlDialogueFinished
+    ) {
+        thoughtNextButton.style.display = "block";
+        thoughts.style.top = "30%";
+        owlConversation();
+        return;
+    }
+
+    if ( (mapRow === 2 && mapCol === 2) || (mapRow === 0 && mapCol === 2) ) {
+        thoughtNextButton.style.display = "none";
+        thoughts.style.top = "40%";
+    }
+
     // CAVE DEATH
     if (
         mapRow === 0 &&
@@ -274,6 +318,83 @@ function updateMapBackground() {
     updatePortalVisibility();
     updateCupVisibility()
     drawVisibleWalls();
+}
+
+// OWL
+
+function updateDialogueStyle(dialogueId) {
+    if (dialogueId === 17 || dialogueId === 20) {
+        thoughtBubble.style.backgroundColor = "#34feed";
+        bubblePic.src = "./img/exclamation-mark.png";
+    } else {
+        thoughtBubble.style.backgroundColor = "#772f2f";
+        bubblePic.src = "./img/owl.png";
+    }
+}
+
+function owlConversation() {
+    if (owlDialogueActive || owlDialogueFinished) {
+        return;
+    }
+
+    owlDialogueActive = true;
+    gameStarted = false;
+
+    KEY_EVENTS.leftArrow = false;
+    KEY_EVENTS.rightArrow = false;
+    KEY_EVENTS.upArrow = false;
+    KEY_EVENTS.downArrow = false;
+
+    owlDialogueIndex = 0;
+
+    thoughtBubble.style.display = "flex";
+    thoughtBubble.style.animation = "fadeInThought 0.75s ease forwards";
+
+    thoughtChoiceButtons.style.display = "none";
+    thoughtNextButton.style.display = "inline-block";
+
+    loadThoughtById(OWL_DIALOGUE_IDS[owlDialogueIndex]);
+    updateDialogueStyle(OWL_DIALOGUE_IDS[owlDialogueIndex]);
+}
+
+function nextOwlDialogue() {
+    if (!owlDialogueActive) {
+        return;
+    }
+
+    owlDialogueIndex++;
+
+    if (owlDialogueIndex >= OWL_DIALOGUE_IDS.length) {
+        owlDialogueIndex = OWL_DIALOGUE_IDS.length - 1;
+    }
+
+    const currentDialogueId = OWL_DIALOGUE_IDS[owlDialogueIndex];
+
+    loadThoughtById(currentDialogueId);
+    updateDialogueStyle(currentDialogueId);
+
+    if (currentDialogueId === 23) {
+        thoughtNextButton.style.display = "none";
+        thoughtChoiceButtons.style.display = "flex";
+    }
+}
+
+function chooseOwlPath(direction) {
+    owlDialogueActive = false;
+    owlDialogueFinished = true;
+    owlChoice = direction;
+
+    thoughtBubble.style.display = "none";
+    thoughtChoiceButtons.style.display = "none";
+    thoughtNextButton.style.display = "inline-block";
+
+    thoughtBubble.style.backgroundColor = "#34feed";
+    bubblePic.src = "./img/exclamation-mark.png";
+
+    drawVisibleWalls();
+
+    gameStarted = true;
+    gameLoop();
 }
 
 // KEYBOARD INPUT

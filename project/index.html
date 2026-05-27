@@ -51,7 +51,16 @@
     <div id="thought-bubble">
         <p id="thoughts"></p>
 
-        <img src="./img/exclamation-mark.png" alt="exclamation mark" id="exclamation-mark">
+        <div id="thought-controls">
+            <button id="thought-next" onclick="nextOwlDialogue()">Next</button>
+
+            <div id="thought-choice-buttons">
+                <button onclick="chooseOwlPath('up')">Up</button>
+                <button onclick="chooseOwlPath('down')">Down</button>
+            </div>
+        </div>
+
+        <img src="./img/exclamation-mark.png" id="bubblePic">
     </div>
 
     <!-- Health Bar -->
