@@ -67,7 +67,7 @@ let KEY_EVENTS = {
 
 let GAME_CONFIG = {
     gameSpeed: 28,
-    characterSpeed: 30
+    characterSpeed: 16
     // normal: 8
 };
 
@@ -1047,7 +1047,6 @@ function showGameOverWolfEnding() {
     KEY_EVENTS.upArrow = false;
     KEY_EVENTS.downArrow = false;
 
-    // Ende nicht erreicht: kein Leaderboard
     leaderboardScreen.style.display = "none";
     gameOverBox.style.display = "block";
     goodEndingReached = false;
@@ -1059,6 +1058,8 @@ function showGameOverWolfEnding() {
     endingText.innerHTML = "You died.<br>You got eaten by the wolf and never found the farm.";
 
     gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
+
+
 }
 
 // BAD ENDING (Brücke)
@@ -1073,7 +1074,6 @@ function showBrokenBridgeDeath() {
     KEY_EVENTS.upArrow = false;
     KEY_EVENTS.downArrow = false;
 
-    // Ende nicht erreicht: kein Leaderboard
     leaderboardScreen.style.display = "none";
     gameOverBox.style.display = "block";
     goodEndingReached = false;
@@ -1100,7 +1100,6 @@ function showCaveDeath() {
     KEY_EVENTS.upArrow = false;
     KEY_EVENTS.downArrow = false;
 
-    // Ende nicht erreicht: kein Leaderboard
     leaderboardScreen.style.display = "none";
     gameOverBox.style.display = "block";
     goodEndingReached = false;
@@ -1109,10 +1108,12 @@ function showCaveDeath() {
 
     setTimeout(() => {
         gameOverScreen.style.display = "flex";
-        gameOverScreen.style.animation = "gameOverBlackScreen 0.5s ease forwards";
+        gameOverScreen.style.animation = "gameOverBlackScreen 0.7s ease forwards";
+    }, 650);
 
+    setTimeout(() => {
         gameOverBox.style.backgroundImage = "url('./img/BadEnding.png')";
         endingText.innerHTML = "You went into the cave and explored it. After a while, you realized you were lost in the dark and couldn't find your way out. <br>You starved to death in the cave and never made it back to the farm.";
         gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
-    }, 2000);
+    }, 5000);
 }
