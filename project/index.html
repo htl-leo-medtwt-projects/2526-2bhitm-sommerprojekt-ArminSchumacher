@@ -21,6 +21,12 @@
         <img src="./img/Logo 2.png" alt="Game Logo" id="logo">
     </div>
 
+    <!-- Background Music Button -->
+    <img src="./img/quiet.png" onclick="toggleBGM()" alt="Background Music" id="bgm">
+    <audio id="bgm-audio" loop>
+        <source src="./Audio/bgm.mp3" type="audio/mpeg">
+    </audio>
+
     <!-- NAV -->
     <img src="./img/Tree 2.png" alt="Navigation Tree" id="nav-tree">
 
@@ -85,11 +91,14 @@
 
     <!-- Endings -->
     <div id="game-over-screen">
+
+        <!-- <div id="deathscreens"></div> -->
+
         <div id="game-over-box">
             <p id="ending-text"></p>
 
             <div id="ending-buttons">
-                <button id="restart-button" onclick="location.reload()">Play again</button>
+                <button id="restart-button"><a href="./index.html">Play again</a></button>
                 <button id="leaderboard-button" onclick="openLeaderboard()">Leaderboard</button>
             </div>
         </div>

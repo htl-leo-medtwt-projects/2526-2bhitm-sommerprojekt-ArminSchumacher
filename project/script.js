@@ -29,14 +29,36 @@ let gameOverBox = document.getElementById("game-over-box");
 let gameOverScreen = document.getElementById("game-over-screen");
 let endingText = document.getElementById("ending-text");
 let endingTitle = document.getElementById("ending-title");
+let deathscreens = document.getElementById("deathscreens");
+let bgmButton = document.getElementById("bgm");
+let bgmAudio = document.getElementById("bgm-audio");
+let bgmPlaying = false;
 let bridgeBroken = false;
 let owlDialogueActive = false;
 let owlDialogueFinished = false;
 let owlDialogueIndex = 0;
 let owlChoice = null;
+let bittersweetEndingSrcOne = "";
+let bittersweetEndingSrcTwo = "";
+let caveEndingSrcOne = "";
+let caveEndingSrcTwo = "";
+
 
 thoughtNextButton.style.display = "none";
 const OWL_DIALOGUE_IDS = [16, 17, 18, 19, 20, 21, 22, 23];
+
+// BACKGROUND MUSIC
+function toggleBGM() {
+    if (!bgmPlaying) {
+        bgmAudio.play();
+        bgmButton.src = "./img/loud.png";
+        bgmPlaying = true;
+    } else {
+        bgmAudio.pause();
+        bgmButton.src = "./img/quiet.png";
+        bgmPlaying = false;
+    }
+}
 
 // leaderboard variablen
 let leaderboardScreen = document.getElementById("leaderboard-screen");
@@ -415,69 +437,86 @@ document.onkeydown = keyListenerDown;
 document.onkeyup = keyListenerUp;
 
 function keyListenerDown(e) {
-    if (e.key === "ArrowLeft") {
+    if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
         KEY_EVENTS.leftArrow = true;
         KEY_EVENTS.rightArrow = false;
         KEY_EVENTS.upArrow = false;
         KEY_EVENTS.downArrow = false;
     }
 
-    if (e.key === "ArrowUp") {
+    if (e.key === "ArrowUp" || e.key === "w" || e.key === "W") {
         KEY_EVENTS.leftArrow = false;
         KEY_EVENTS.rightArrow = false;
         KEY_EVENTS.upArrow = true;
         KEY_EVENTS.downArrow = false;
     }
 
-    if (e.key === "ArrowRight") {
+    if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") {
         KEY_EVENTS.leftArrow = false;
         KEY_EVENTS.rightArrow = true;
         KEY_EVENTS.upArrow = false;
         KEY_EVENTS.downArrow = false;
     }
 
-    if (e.key === "ArrowDown") {
+    if (e.key === "ArrowDown" || e.key === "s" || e.key === "S") {
         KEY_EVENTS.leftArrow = false;
         KEY_EVENTS.rightArrow = false;
         KEY_EVENTS.upArrow = false;
         KEY_EVENTS.downArrow = true;
     }
+
 }
 
 function keyListenerUp(e) {
-    if (e.key === "ArrowLeft") {
+    if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
         KEY_EVENTS.leftArrow = false;
     }
 
-    if (e.key === "ArrowUp") {
+    if (e.key === "ArrowUp" || e.key === "w" || e.key === "W") {
         KEY_EVENTS.upArrow = false;
     }
 
-    if (e.key === "ArrowRight") {
+    if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") {
         KEY_EVENTS.rightArrow = false;
     }
 
-    if (e.key === "ArrowDown") {
+    if (e.key === "ArrowDown" || e.key === "s" || e.key === "S") {
         KEY_EVENTS.downArrow = false;
     }
 }
 
+// CHARACTER SELECTION
 function selectCharacter(characterNumber) {
     PLAYER.spriteImg.src = "./img/sprite.png";
 
     if (characterNumber === 1) {
         // Ziege
         PLAYER.spriteStartRight = 0;
+
+        bittersweetEndingSrcOne = "./img/goat-bittersweet-sceen1.png";
+        bittersweetEndingSrcTwo = "./img/goat-bittersweet-sceen2.png";
+        caveEndingSrcOne = "./img/goat-cave-sceen1.png";
+        caveEndingSrcTwo = "./img/goat-cave-sceen2.png";
     }
 
     if (characterNumber === 2) {
         // Weißes Schaf
         PLAYER.spriteStartRight = 150;
+
+        bittersweetEndingSrcOne = "./img/sheep-bittersweet-sceen1.png";
+        bittersweetEndingSrcTwo = "./img/sheep-bittersweet-sceen2.png";
+        caveEndingSrcOne = "./img/sheep-cave-sceen1.png";
+        caveEndingSrcTwo = "./img/sheep-cave-sceen2.png";
     }
 
     if (characterNumber === 3) {
         // Schwarzes Schaf
         PLAYER.spriteStartRight = 450;
+
+        bittersweetEndingSrcOne = "./img/sheepB-bittersweet-sceen1.png";
+        bittersweetEndingSrcTwo = "./img/sheepB-bittersweet-sceen2.png";
+        caveEndingSrcOne = "./img/sheepB-cave-sceen1.png";
+        caveEndingSrcTwo = "./img/sheepB-cave-sceen2.png";
     }
 
     playerChoose.style.display = "none";
@@ -698,6 +737,12 @@ function Start() {
     characterSelection.style.transition = "opacity 0.5s ease, top 0.9s ease";
     characterSelection.style.opacity = "1";
     characterSelection.style.top = "50%";
+
+    // der button soll dann einen animation haben dass er verschwindet
+
+    bgmButton.style.transition = "opacity 0.5s ease, top 0.9s ease";
+    bgmButton.style.opacity = "0";
+    bgmButton.style.top = "0";
 
     loadThoughtById(1);
 }
@@ -1109,6 +1154,8 @@ function showCaveDeath() {
     setTimeout(() => {
         gameOverScreen.style.display = "flex";
         gameOverScreen.style.animation = "gameOverBlackScreen 0.7s ease forwards";
+        deathscreens.innerHTML = `<img src="${caveEndingSrcOne}" style="width: 100%; height: auto; opacity: 0; animation: deathScreenOne 0.7s ease forwards">
+                                <img src="${caveEndingSrcTwo}" style="width: 100%; height: auto; opacity: 0; animation: deathScreenTwo 0.7s ease forwards">`;
     }, 650);
 
     setTimeout(() => {

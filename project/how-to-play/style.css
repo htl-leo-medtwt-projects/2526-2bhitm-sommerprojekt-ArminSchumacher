@@ -67,7 +67,7 @@ p {
 .back {
     position: fixed;
     bottom: -8vh;
-    left: 35vw;
+    left: 33vw;
     height: 35vh;
     opacity: 0;
     animation: slideIn 1s ease-out 0.4s forwards;

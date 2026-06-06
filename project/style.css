@@ -15,6 +15,11 @@ body {
     src: url(./font/JosefinSlab-Bold.ttf);
 }
 
+a {
+    text-decoration: none;
+    color: white;
+}
+
 /* Nebel - ANFANG */
 #fogDown {
     position: fixed;
@@ -81,6 +86,25 @@ body {
 }
 
 /* Nebel - ENDE */
+
+/* Background Music Button - ANFANG */
+
+#bgm {
+    position: fixed;
+    top: 2vh;
+    right: 2vw;
+    width: 7vw;
+    height: auto;
+    z-index: 350;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+#bgm:hover {
+    transform: scale(1.06);
+}
+
+/* Background Music Button - ENDE */
 
 
 /* Start Screen & NAV - ANFANG*/
@@ -623,6 +647,8 @@ body {
     transform: translateX(-50%);
 }
 
+/* #death */
+
 /* Game over screen - ENDE */
 
 
@@ -634,4 +660,4 @@ body {
     box-sizing: border-box;
     z-index: 120;
     pointer-events: none;
-} */
+} */ 
