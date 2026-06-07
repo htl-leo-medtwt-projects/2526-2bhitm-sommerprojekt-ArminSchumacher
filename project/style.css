@@ -97,6 +97,7 @@ a {
     height: auto;
     z-index: 350;
     cursor: pointer;
+    opacity: 0;
     transition: transform 0.2s ease;
 }
 
@@ -433,7 +434,7 @@ a {
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 1100;
 }
 
 #game-over-box {
@@ -451,6 +452,7 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1100;
 }
 
 #ending-text {
@@ -647,7 +649,66 @@ a {
     transform: translateX(-50%);
 }
 
-/* #death */
+/* deathscreens */
+#deathscreens {
+    position: fixed;
+    inset: 0;
+    z-index: 1001;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.cave-scene {
+    position: fixed;
+    width: 55vw;
+    height: auto;
+}
+
+#cave-scene-one {
+    top: 8vh;
+    left: 100vw;
+    rotate: 3deg;
+    border-radius: 22px;
+}
+
+#cave-scene-two {
+    top: 30vh;
+    left: 100vw;
+    rotate: -2deg;
+    border-radius: 22px;
+}
+
+@keyframes deathScreenOne {
+    0% {
+        left: 100vw;
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    100% {
+        left: 8vw;
+        opacity: 1;
+    }
+}
+
+@keyframes deathScreenTwo {
+    0% {
+        left: 100vw;
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    100% {
+        left: 35vw;
+        opacity: 1;
+    }
+}
 
 /* Game over screen - ENDE */
 
@@ -660,4 +721,4 @@ a {
     box-sizing: border-box;
     z-index: 120;
     pointer-events: none;
-} */ 
+} */

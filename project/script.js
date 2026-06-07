@@ -47,18 +47,6 @@ let caveEndingSrcTwo = "";
 thoughtNextButton.style.display = "none";
 const OWL_DIALOGUE_IDS = [16, 17, 18, 19, 20, 21, 22, 23];
 
-// BACKGROUND MUSIC
-function toggleBGM() {
-    if (!bgmPlaying) {
-        bgmAudio.play();
-        bgmButton.src = "./img/loud.png";
-        bgmPlaying = true;
-    } else {
-        bgmAudio.pause();
-        bgmButton.src = "./img/quiet.png";
-        bgmPlaying = false;
-    }
-}
 
 // leaderboard variablen
 let leaderboardScreen = document.getElementById("leaderboard-screen");
@@ -104,6 +92,91 @@ const MAPS = [
     ["./img/UmgefallenerBaum.png", "./img/StartMap.png", "./img/Eule-Map.png"],
     ["./img/CaveUndWeg.png", "./img/bear-map.png", "./img/farm.png"]
 ];
+
+
+// MUSIC
+// Background Music
+function toggleBGM() {
+    if (!bgmPlaying) {
+        bgmAudio.play();
+        bgmButton.src = "./img/loud.png";
+        bgmPlaying = true;
+    } else {
+        bgmAudio.pause();
+        bgmButton.src = "./img/quiet.png";
+        bgmPlaying = false;
+    }
+}
+
+// Button Sound
+function toggleBtnSound() {
+    const btnAudio = new Audio("./audio/button-click.mp3");
+    btnAudio.volume = 0.2;
+    btnAudio.play();
+}
+
+// Animals
+function toggleGoatSound() {
+    const goatAudio = new Audio("./audio/goat.mp3");
+    goatAudio.volume = 0.7;
+    goatAudio.play();
+}
+
+function toggleSheepSound() {
+    const sheepAudio = new Audio("./audio/sheep.mp3");
+    sheepAudio.volume = 0.7;
+    sheepAudio.play();
+}
+
+function toggleSheepBSound() {
+    const sheepBAudio = new Audio("./audio/sheepB.mp3");
+    sheepBAudio.volume = 0.7;
+    sheepBAudio.play();
+}
+
+// Wolf Sound
+const wolfAudio = new Audio("./audio/wolf.mp3");
+wolfAudio.volume = 0.8;
+wolfAudio.loop = true; // optional
+
+let isInWolfMap = false;
+
+function updateWolfSound() {
+
+    // Spieler betritt die Wolf-Map
+    if (mapRow === 1 && mapCol === 0) {
+        if (!isInWolfMap) {
+            wolfAudio.currentTime = 0;
+            wolfAudio.play();
+            isInWolfMap = true;
+        }
+    }
+
+    // Spieler verlässt die Wolf-Map
+    else {
+        if (isInWolfMap) {
+            wolfAudio.pause();
+            wolfAudio.currentTime = 0;
+            isInWolfMap = false;
+        }
+    }
+}
+
+// Running Sound
+const runAudio = new Audio("./audio/footsteps.mp3");
+runAudio.volume = 1;
+runAudio.loop = true;
+
+function startRunSound() {
+    if (runAudio.paused) {
+        runAudio.play();
+    }
+}
+
+function stopRunSound() {
+    runAudio.pause();
+    runAudio.currentTime = 0;
+}
 
 // WALLS
 function rectsOverlap(r1, r2) {
@@ -240,14 +313,15 @@ function movePlayer(dx, dy, dr) {
     if (
         mapRow === 1 &&
         mapCol === 2 &&
-        nextX >= 730 &&
+        nextX >= 690 &&
         nextX <= 760 &&
-        nextY >= 310 &&
-        nextY <= 370 &&
+        nextY >= 300 &&
+        nextY <= 400 &&
         !owlDialogueFinished
     ) {
         thoughtNextButton.style.display = "block";
         thoughts.style.top = "30%";
+        
         owlConversation();
         return;
     }
@@ -392,6 +466,12 @@ function owlConversation() {
     updateDialogueStyle(OWL_DIALOGUE_IDS[owlDialogueIndex]);
 }
 
+document.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+        nextOwlDialogue();
+    }
+});
+
 function nextOwlDialogue() {
     if (!owlDialogueActive) {
         return;
@@ -437,11 +517,14 @@ document.onkeydown = keyListenerDown;
 document.onkeyup = keyListenerUp;
 
 function keyListenerDown(e) {
+    if (e.repeat) return;
+
     if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
         KEY_EVENTS.leftArrow = true;
         KEY_EVENTS.rightArrow = false;
         KEY_EVENTS.upArrow = false;
         KEY_EVENTS.downArrow = false;
+        startRunSound();
     }
 
     if (e.key === "ArrowUp" || e.key === "w" || e.key === "W") {
@@ -449,6 +532,7 @@ function keyListenerDown(e) {
         KEY_EVENTS.rightArrow = false;
         KEY_EVENTS.upArrow = true;
         KEY_EVENTS.downArrow = false;
+        startRunSound();
     }
 
     if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") {
@@ -456,6 +540,7 @@ function keyListenerDown(e) {
         KEY_EVENTS.rightArrow = true;
         KEY_EVENTS.upArrow = false;
         KEY_EVENTS.downArrow = false;
+        startRunSound();
     }
 
     if (e.key === "ArrowDown" || e.key === "s" || e.key === "S") {
@@ -463,8 +548,8 @@ function keyListenerDown(e) {
         KEY_EVENTS.rightArrow = false;
         KEY_EVENTS.upArrow = false;
         KEY_EVENTS.downArrow = true;
+        startRunSound();
     }
-
 }
 
 function keyListenerUp(e) {
@@ -482,6 +567,15 @@ function keyListenerUp(e) {
 
     if (e.key === "ArrowDown" || e.key === "s" || e.key === "S") {
         KEY_EVENTS.downArrow = false;
+    }
+
+    if (
+        !KEY_EVENTS.leftArrow &&
+        !KEY_EVENTS.rightArrow &&
+        !KEY_EVENTS.upArrow &&
+        !KEY_EVENTS.downArrow
+    ) {
+        stopRunSound();
     }
 }
 
@@ -518,6 +612,10 @@ function selectCharacter(characterNumber) {
         caveEndingSrcOne = "./img/sheepB-cave-sceen1.png";
         caveEndingSrcTwo = "./img/sheepB-cave-sceen2.png";
     }
+
+    bgmButton.style.transition = "opacity 0.5s ease, top 0.9s ease";
+    bgmButton.style.opacity = "0";
+    bgmButton.style.top = "0";
 
     playerChoose.style.display = "none";
     characterSelection.style.display = "none";
@@ -706,6 +804,7 @@ function gameLoop() {
 
     updateWolf();
     updateWolfDamage();
+    updateWolfSound();
 
     setTimeout(gameLoop, 1000 / GAME_CONFIG.gameSpeed);
 }
@@ -738,11 +837,7 @@ function Start() {
     characterSelection.style.opacity = "1";
     characterSelection.style.top = "50%";
 
-    // der button soll dann einen animation haben dass er verschwindet
-
-    bgmButton.style.transition = "opacity 0.5s ease, top 0.9s ease";
-    bgmButton.style.opacity = "0";
-    bgmButton.style.top = "0";
+    bgmButton.style.opacity = "1";
 
     loadThoughtById(1);
 }
@@ -930,13 +1025,30 @@ function showGameOverBittersweet() {
     gameOverBox.style.display = "block";
     goodEndingReached = false;
 
+    deathscreens.innerHTML = "";
+
     gameOverScreen.style.display = "flex";
-    gameOverScreen.style.animation = "gameOverBlackScreen 0.5s ease forwards";
+    gameOverScreen.style.animation = "gameOverBlackScreen 0.7s ease forwards";
 
-    gameOverBox.style.backgroundImage = "url('./img/BittersweetEnding.png')";
-    endingText.textContent = "You ran in the meadow but never found the farm. You started a new life and tried to survive in the wilderness. You do well for a while and occasionally find other animals to befriend. Five months later, you go out one day to look for food and are attacked by a wolf pack. You and your friends died.";
+    setTimeout(() => {
+        deathscreens.innerHTML = `
+            <img id="cave-scene-one" class="cave-scene" src="${bittersweetEndingSrcOne}" style="animation: deathScreenOne 1.5s ease forwards;">
+        `;
+    }, 1000);
 
-    gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
+    setTimeout(() => {
+        // --> insertAdjacentHTML mit hilfe von ki bekommen, damit die animation des 1. bildes nicht nochmal passiert
+        deathscreens.insertAdjacentHTML(
+            "beforeend",
+            `<img id="cave-scene-two" class="cave-scene" src="${bittersweetEndingSrcTwo}" style="animation: deathScreenTwo 1.5s ease forwards;">`
+        );
+    }, 3000);
+
+    setTimeout(() => {
+        gameOverBox.style.backgroundImage = "url('./img/BittersweetEnding.png')";
+        endingText.textContent = "You ran in the meadow but never found the farm. You started a new life and tried to survive in the wilderness. You do well for a while and occasionally find other animals to befriend. Five months later, you go out one day to look for food and are attacked by a wolf pack. You and your friends died.";
+        gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
+    }, 5000);
 }
 
 // LEADERBOARD
@@ -1151,12 +1263,24 @@ function showCaveDeath() {
 
     PLAYER.box.style.display = "none";
 
+    deathscreens.innerHTML = "";
+
+    gameOverScreen.style.display = "flex";
+    gameOverScreen.style.animation = "gameOverBlackScreen 0.7s ease forwards";
+
     setTimeout(() => {
-        gameOverScreen.style.display = "flex";
-        gameOverScreen.style.animation = "gameOverBlackScreen 0.7s ease forwards";
-        deathscreens.innerHTML = `<img src="${caveEndingSrcOne}" style="width: 100%; height: auto; opacity: 0; animation: deathScreenOne 0.7s ease forwards">
-                                <img src="${caveEndingSrcTwo}" style="width: 100%; height: auto; opacity: 0; animation: deathScreenTwo 0.7s ease forwards">`;
-    }, 650);
+        deathscreens.innerHTML = `
+            <img id="cave-scene-one" class="cave-scene" src="${caveEndingSrcOne}" style="animation: deathScreenOne 1.5s ease forwards;">
+        `;
+    }, 1000);
+
+    setTimeout(() => {
+        // --> insertAdjacentHTML mit hilfe von ki bekommen, damit die animation des 1. bildes nicht nochmal passiert
+        deathscreens.insertAdjacentHTML(
+            "beforeend",
+            `<img id="cave-scene-two" class="cave-scene" src="${caveEndingSrcTwo}" style="animation: deathScreenTwo 1.5s ease forwards;">`
+        );
+    }, 3000);
 
     setTimeout(() => {
         gameOverBox.style.backgroundImage = "url('./img/BadEnding.png')";
