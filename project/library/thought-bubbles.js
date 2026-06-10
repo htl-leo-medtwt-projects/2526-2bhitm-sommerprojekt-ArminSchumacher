@@ -11,7 +11,7 @@ const thoughtBubbles = [
   },
   {
     "id": 3,
-    "text": "The wolf looks scary, I should get out of here!"
+    "text": "A Wolf!! He's attacking me!"
   },
   {
     "id": 4,
@@ -32,6 +32,10 @@ const thoughtBubbles = [
   {
     "id": 8,
     "text": "The Owl was right i shouldn't trust strangers. She lied about it. I only need to trust myself. I made it I am home!"
+  },
+  {
+    "id": 9,
+    "text": "Oh the bear looks scary, but what chances do I have? I need to ask him for help."
   },
 
   // Owl Paragraph 

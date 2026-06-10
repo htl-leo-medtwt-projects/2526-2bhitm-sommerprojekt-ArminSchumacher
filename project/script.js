@@ -134,6 +134,24 @@ function toggleSheepBSound() {
     sheepBAudio.play();
 }
 
+function toggleOwlSound() {
+    const owlAudio = new Audio("./audio/owl.mp3");
+    owlAudio.volume = 0.7;
+    owlAudio.play();
+}
+
+// Win / Lose Sound
+const winAudio = new Audio("./audio/win.mp3");
+winAudio.volume = 0.8;
+
+const loseAudio = new Audio("./audio/lose.mp3");
+loseAudio.volume = 0.8;
+
+// Falling sound
+const fallAudio = new Audio("./audio/falling.mp3");
+fallAudio.volume = 0.8;
+
+
 // Wolf Sound
 const wolfAudio = new Audio("./audio/wolf.mp3");
 wolfAudio.volume = 0.8;
@@ -321,8 +339,9 @@ function movePlayer(dx, dy, dr) {
     ) {
         thoughtNextButton.style.display = "block";
         thoughts.style.top = "30%";
-        
+
         owlConversation();
+        toggleOwlSound();
         return;
     }
 
@@ -752,6 +771,10 @@ function changeMap(direction) {
         loadThoughtById(8);
     }
 
+    if (mapRow === 2 && mapCol === 1) {
+        loadThoughtById(9);
+    }
+
     updateMapBackground();
 }
 
@@ -1010,7 +1033,7 @@ function updateCupVisibility() {
     }
 }
 
-
+// ENDINGS
 // BITTERSWEET ENDING
 function showGameOverBittersweet() {
     gameStarted = false;
@@ -1020,7 +1043,6 @@ function showGameOverBittersweet() {
     KEY_EVENTS.upArrow = false;
     KEY_EVENTS.downArrow = false;
 
-    // Ende nicht erreicht: kein Leaderboard
     leaderboardScreen.style.display = "none";
     gameOverBox.style.display = "block";
     goodEndingReached = false;
@@ -1048,6 +1070,7 @@ function showGameOverBittersweet() {
         gameOverBox.style.backgroundImage = "url('./img/BittersweetEnding.png')";
         endingText.textContent = "You ran in the meadow but never found the farm. You started a new life and tried to survive in the wilderness. You do well for a while and occasionally find other animals to befriend. Five months later, you go out one day to look for food and are attacked by a wolf pack. You and your friends died.";
         gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
+        loseAudio.play();
     }, 5000);
 }
 
@@ -1161,6 +1184,9 @@ function showGameOverGoodEnding() {
 
     goodEndingReached = true;
 
+    winAudio.play();
+    stopRunSound();
+
     gameOverScreen.style.display = "flex";
     gameOverScreen.style.animation = "gameOverBlackScreen 0.5s ease forwards";
 
@@ -1215,7 +1241,7 @@ function showGameOverWolfEnding() {
     endingText.innerHTML = "You died.<br>You got eaten by the wolf and never found the farm.";
 
     gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
-
+    loseAudio.play();
 
 }
 
@@ -1223,6 +1249,8 @@ function showGameOverWolfEnding() {
 function showBrokenBridgeDeath() {
     bridgeBroken = true;
     document.body.style.backgroundImage = "url('./img/broken-bridge.png')";
+
+    fallAudio.play();
 
     gameStarted = false;
 
@@ -1245,6 +1273,7 @@ function showBrokenBridgeDeath() {
         endingText.innerHTML = "You died.<br>The bridge broke and you fell <br>into the abyss.";
 
         gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
+        loseAudio.play();
     }, 600);
 }
 
@@ -1286,5 +1315,6 @@ function showCaveDeath() {
         gameOverBox.style.backgroundImage = "url('./img/BadEnding.png')";
         endingText.innerHTML = "You went into the cave and explored it. After a while, you realized you were lost in the dark and couldn't find your way out. <br>You starved to death in the cave and never made it back to the farm.";
         gameOverBox.style.animation = "gameOverFlyIn 0.8s ease 0.4s forwards";
+        loseAudio.play();
     }, 5000);
 }
