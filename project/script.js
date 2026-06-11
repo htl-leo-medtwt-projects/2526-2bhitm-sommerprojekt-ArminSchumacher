@@ -79,11 +79,14 @@ let KEY_EVENTS = {
 
 let GAME_CONFIG = {
     gameSpeed: 28,
-    characterSpeed: 8
+    characterSpeed: 20
     // normal: 8
 };
 
 let gameStarted = false;
+
+
+
 
 // MAPS
 let mapRow = 1;
@@ -94,6 +97,8 @@ const MAPS = [
     ["./img/UmgefallenerBaum.png", "./img/StartMap.png", "./img/Eule-Map.png"],
     ["./img/CaveUndWeg.png", "./img/bear-map.png", "./img/farm.png"]
 ];
+
+
 
 
 // MUSIC

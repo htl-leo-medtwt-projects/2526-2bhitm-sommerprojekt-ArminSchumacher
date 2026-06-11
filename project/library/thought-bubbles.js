@@ -45,7 +45,7 @@ const thoughtBubbles = [
   },
   {
     "id": 17,
-    "text": "Yes I want to go home.I just woke up and suddenly I was here. Do you know where my farm is?"
+    "text": "Yes I want to go home. I just woke up and suddenly I was here. Do you know where my farm is?"
   },
   {
     "id": 18,
