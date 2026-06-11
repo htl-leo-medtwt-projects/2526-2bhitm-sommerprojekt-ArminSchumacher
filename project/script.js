@@ -30,6 +30,8 @@ let gameOverScreen = document.getElementById("game-over-screen");
 let endingText = document.getElementById("ending-text");
 let endingTitle = document.getElementById("ending-title");
 let deathscreens = document.getElementById("deathscreens");
+let restartButton = document.getElementById("restart-button");
+let leaderboardButton = document.getElementById("leaderboard-button");
 let bgmButton = document.getElementById("bgm");
 let bgmAudio = document.getElementById("bgm-audio");
 let bgmPlaying = false;
@@ -77,7 +79,7 @@ let KEY_EVENTS = {
 
 let GAME_CONFIG = {
     gameSpeed: 28,
-    characterSpeed: 16
+    characterSpeed: 8
     // normal: 8
 };
 
@@ -179,6 +181,9 @@ function updateWolfSound() {
         }
     }
 }
+
+let wolfDamageAudio = new Audio("./audio/wolf-bite.mp3");
+wolfDamageAudio.volume = 0.8;
 
 // Running Sound
 const runAudio = new Audio("./audio/footsteps.mp3");
@@ -985,6 +990,7 @@ function updateWolfDamage() {
 
         if (PLAYER_STATE.healthStage > 1) {
             PLAYER_STATE.healthStage--;
+            wolfDamageAudio.play();
             updateHealthBar();
         }
     }
@@ -1177,6 +1183,8 @@ function showGameOverGoodEnding() {
     KEY_EVENTS.rightArrow = false;
     KEY_EVENTS.upArrow = false;
     KEY_EVENTS.downArrow = false;
+    restartButton.style.backgroundColor = "#41772f";
+    leaderboardButton.style.backgroundColor = "#41772f";
 
     if (runStartTime !== null && finishedRunTime === null) {
         finishedRunTime = Date.now() - runStartTime;
@@ -1233,6 +1241,8 @@ function showGameOverWolfEnding() {
     leaderboardScreen.style.display = "none";
     gameOverBox.style.display = "block";
     goodEndingReached = false;
+    restartButton.style.backgroundColor = "#772f2f";
+    leaderboardButton.style.backgroundColor = "#772f2f";
 
     gameOverScreen.style.display = "flex";
     gameOverScreen.style.animation = "gameOverBlackScreen 0.5s ease forwards";
@@ -1262,6 +1272,8 @@ function showBrokenBridgeDeath() {
     leaderboardScreen.style.display = "none";
     gameOverBox.style.display = "block";
     goodEndingReached = false;
+    restartButton.style.backgroundColor = "#772f2f";
+    leaderboardButton.style.backgroundColor = "#772f2f";
 
     setTimeout(() => {
         PLAYER.box.style.animation = "deathAnimation 0.6s ease forwards";
@@ -1289,6 +1301,8 @@ function showCaveDeath() {
     leaderboardScreen.style.display = "none";
     gameOverBox.style.display = "block";
     goodEndingReached = false;
+    restartButton.style.backgroundColor = "#772f2f";
+    leaderboardButton.style.backgroundColor = "#772f2f";
 
     PLAYER.box.style.display = "none";
 
