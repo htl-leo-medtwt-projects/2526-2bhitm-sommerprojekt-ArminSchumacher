@@ -70,5 +70,38 @@ const thoughtBubbles = [
   {
     "id": 23,
     "text": "Which path will you choose?"
+  },
+
+  // Bear Paragraph
+  {
+    "id": 30,
+    "text": "Hey, a stranger! Are you lost, little one?"
+  },
+  { // animal
+    "id": 31,
+    "text": "Yes, I want to get out of the woods, it's creepy... I want to go back to the farm."
+  },
+  {
+    "id": 32,
+    "text": "Oh, I'm sorry if I scared you. But no little one, I don't know where your farm is."
+  },
+    {
+    "id": 33,
+    "text": "Since you're here, I have a question too. Have you seen my honey?"
+  },
+  // if NO
+  {
+    "id": 35,
+    "text": "Oh, that's bad. Well I'm hungry.. are you sure you haven't seen it?"
+  },
+  // if LEFT
+  {
+    "id": 36,
+    "text": "Well, I haven't looked there yet, but I guess I can check it out. Thanks, you can go."
+  },
+  // if RIGHT
+  {
+    "id": 37,
+    "text": "I've already checked here, Liar!! You will see..."
   }
 ];

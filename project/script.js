@@ -40,6 +40,10 @@ let owlDialogueActive = false;
 let owlDialogueFinished = false;
 let owlDialogueIndex = 0;
 let owlChoice = null;
+let bearDialogueActive = false;
+let bearDialogueFinished = false;
+let bearDialogueIndex = 0;
+let bearChoice = null;
 let bittersweetEndingSrcOne = "";
 let bittersweetEndingSrcTwo = "";
 let caveEndingSrcOne = "";
@@ -48,7 +52,7 @@ let caveEndingSrcTwo = "";
 
 thoughtNextButton.style.display = "none";
 const OWL_DIALOGUE_IDS = [16, 17, 18, 19, 20, 21, 22, 23];
-
+const BEAR_DIALOGUE_IDS = [30, 32, 33, 34, 35, 36, 37];
 
 // leaderboard variablen
 let leaderboardScreen = document.getElementById("leaderboard-screen");
@@ -263,6 +267,8 @@ function wouldCollideWithAnyWall(nextLeft, nextTop) {
     return false;
 }
 
+
+// MAP WALLS
 const MAP_WALLS = {
     // StartMap
     "1-1": [
@@ -317,7 +323,7 @@ const MAP_WALLS = {
     "2-1": [
         { left: 0, top: 0, width: 575, height: 1550 },
         { left: 800, top: 0, width: 575, height: 1550 },
-        { left: 0, top: 425, width: 1575, height: 50 }
+        { left: 0, top: 400, width: 1575, height: 50 }
     ],
 
     // Farm
@@ -358,6 +364,20 @@ function movePlayer(dx, dy, dr) {
     if ((mapRow === 2 && mapCol === 2) || (mapRow === 0 && mapCol === 2)) {
         thoughtNextButton.style.display = "none";
         thoughts.style.top = "40%";
+    }
+
+    // BEAR
+    if (
+        mapRow === 2 &&
+        mapCol === 1 &&
+        nextY >= 399
+    ) {
+        thoughtNextButton.style.display = "block";
+        thoughts.style.top = "30%";
+
+        bearConversation();
+        toggleBearSound();
+        return;
     }
 
     // CAVE DEATH
@@ -540,6 +560,72 @@ function chooseOwlPath(direction) {
     gameStarted = true;
     gameLoop();
 }
+
+// BEAR
+
+function updateDialogueStyleBear(dialogueId) {
+    if (dialogueId === 31) {
+        thoughtBubble.style.backgroundColor = "#34feed";
+        bubblePic.src = "./img/exclamation-mark.png";
+    } else {
+        thoughtBubble.style.backgroundColor = "#61421e";
+        bubblePic.src = "./img/bear-neutral.png";
+    }
+}
+
+function bearConversation() {
+    if (bearDialogueActive || bearDialogueFinished) {
+        return;
+    }
+
+    bearDialogueActive = true;
+    gameStarted = false;
+
+    KEY_EVENTS.leftArrow = false;
+    KEY_EVENTS.rightArrow = false;
+    KEY_EVENTS.upArrow = false;
+    KEY_EVENTS.downArrow = false;
+
+    bearDialogueIndex = 0;
+
+    thoughtBubble.style.display = "flex";
+    thoughtBubble.style.animation = "fadeInThought 0.75s ease forwards";
+
+    thoughtChoiceButtons.style.display = "none";
+    thoughtNextButton.style.display = "inline-block";
+
+    loadThoughtById(BEAR_DIALOGUE_IDS[bearDialogueIndex]);
+    updateDialogueStyleBear(BEAR_DIALOGUE_IDS[bearDialogueIndex]);
+}
+
+document.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+        nextBearDialogue();
+    }
+});
+
+function nextBearDialogue() {
+    if (!bearDialogueActive) {
+        return;
+    }
+
+    bearDialogueIndex++;
+
+    if (bearDialogueIndex >= BEAR_DIALOGUE_IDS.length) {
+        bearDialogueIndex = BEAR_DIALOGUE_IDS.length - 1;
+    }
+
+    const currentDialogueId = BEAR_DIALOGUE_IDS[bearDialogueIndex];
+
+    loadThoughtById(currentDialogueId);
+    updateDialogueStyleBear(currentDialogueId);
+
+    if (currentDialogueId === 33) {
+        thoughtNextButton.style.display = "none";
+        thoughtChoiceButtons.style.display = "flex";
+    }
+}
+
 
 // KEYBOARD INPUT
 document.onkeydown = keyListenerDown;
